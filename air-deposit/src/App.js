@@ -7,16 +7,12 @@ import {Link, Switch, Route, BrowserRouter as Router} from 'react-router-dom';
 import ProductsDashboard from './components/products/products';
 import EmployeesDashboard from './components/employees/employees';
 import StatisticsDashboard from './components/statistics/statistics'
-
+import Signin from './components/signin/signin'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import "shards-ui/dist/css/shards.min.css"
+import 'tachyons'
 const firebaseConfig = {
-  apiKey: "AIzaSyBnd2CziUijN3RzZ9vVa32g4zMKiS8o9UU",
-  authDomain: "air-deposit.firebaseapp.com",
-  databaseURL: "https://air-deposit.firebaseio.com",
-  projectId: "air-deposit",
-  storageBucket: "air-deposit.appspot.com",
-  messagingSenderId: "1057755749597",
-  appId: "1:1057755749597:web:dfb39a8bb96dce1557cf34",
-  measurementId: "G-TN2BQ0KC8C"
+  
 };
 
 // firebase.initializeApp(firebaseConfig);
@@ -27,22 +23,25 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      route:'products'
+      route:'signin'
     };
   }
 
-  onRouteChange=(route)=>{
-    
+  onSignIn = (route) =>{
+    this.setState({route:route})
   }
 
   render() {
-    console.log(this.state.route)
+   
+    if(this.state.route==='signin'){
+      return(<Signin onSignIn = {this.onSignIn}></Signin>)
+    }else
     return (
       <div className="App">
         <Router>
-          <NavBar onRouteChange = {this.onRouteChange}/>
+          <NavBar onSignIn = {this.onSignIn}/>
           <Switch>
-         
+       
           <Route exact path = '/statistics'>
              <StatisticsDashboard/>
         </Route>
@@ -53,9 +52,6 @@ class App extends React.Component {
         <Route path = '/employees'>
             <EmployeesDashboard/>
         </Route>
-
-        
-        
 
           </Switch>
          </Router>
