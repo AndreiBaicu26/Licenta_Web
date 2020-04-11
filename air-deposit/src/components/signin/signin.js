@@ -30,6 +30,8 @@ class Signin extends React.Component{
         }
     }
 
+    
+
   render(){
   return (
     <div style={{
@@ -40,16 +42,17 @@ class Signin extends React.Component{
       <CardHeader className ='f3 calisto'style={{backgroundColor:'DodgerBlue', color:'white'}} /*style={{backgroundColor: 'aqua'}} */>Sign in into your manager account</CardHeader>
       <CardBody >
         <Form>
-          <FormGroup>
-           
-            <FormInput id="#username" placeholder="Username" />
+          <FormGroup>         
+              <label className="user__label" htmlFor="#username">Username</label>
+              <FormInput  id="#username" placeholder="Username" />
+              
           </FormGroup>
-          <FormGroup>
-           
+          <FormGroup>   
+            <label className="pass__label"htmlFor="#password">Password</label>
             <FormInput type="password" id="#password" placeholder="Password" />
           </FormGroup>
         </Form>
-        <Button onClick = {this.onSignInButtonClicked} style={{position: 'relative', left: '40%', top: '90%',fontFamily:'calisto', fontSize:'17px'}} className ='f3 calisto'>Sign In</Button>
+        <Button onClick = {this.onSignInButtonClicked} style={{position: 'relative', left: '40%', top: '90%',fontFamily:'calisto', fontSize:'17px'}} className ='mt3 f3 calisto'>Sign In</Button>
       </CardBody>
     </Card>
     </div>

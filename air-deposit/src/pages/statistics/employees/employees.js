@@ -1,5 +1,5 @@
 import React from "react";
-import 'tachyons';
+import './node_modules/tachyons';
 
 
 const EmployeesDashboard = () => {
