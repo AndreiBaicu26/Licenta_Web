@@ -36,13 +36,13 @@ class NavBar extends React.Component {
     console.log(e.target.id)
     for(let i = 1; i <4; i++){
       if(e.target.id == i){
-        console.log(e.target.getAttribute("class"));
+       
         e.target.setAttribute("class", this.active);
        
       }else
         document.getElementById(i+"").setAttribute("class", this.inactive)
     }
-    console.log(e.target.getAttribute("class"));
+    
   }
 
   render() {
