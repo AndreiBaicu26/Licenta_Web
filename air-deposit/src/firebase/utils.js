@@ -18,44 +18,60 @@ var firebaseConfig = {
   export const firestore = firebase.firestore();
 
 
-  
-  
-
   export const saveEmployee = async(employeeData)=>{
-    const employeeRef = firestore.doc(`employees/${employeeData.cnp}`)
-    
-    const snapShot = await employeeRef.get();
-    
-    var snapId = await firestore.collection("employees").orderBy("id","desc").limit(1).get();
-       
-    var id = snapId.docs.pop().data().id;
-    id++;
 
+    const employeeRef = firestore.doc(`employees/${employeeData.cnp}`) 
+    const snapShot = await employeeRef.get(); 
+    var snapId = await firestore.collection("employees").orderBy("id","desc").limit(1).get();
     
-    if(!snapShot.exists){
+    if(!snapShot.exists || snapId.empty){
       try{
-        employeeRef.set({
-          ...employeeData,
-          id:id
-        })
+        if(snapId.empty){
+          employeeRef.set({
+            ...employeeData,
+            id:1000
+          })
+        }else{
+          var id = snapId.docs.pop().data().id;
+          id++;
+          employeeRef.set({
+            ...employeeData,
+            id:id
+          })
+        }
+        
       }catch(err){
         console.log("Error while saving to firebase", err);
       }
     }else{
-
-      throw "Employee exists"
+      throw Error("Employee exists")
     }
   }
 
-  export const getAllEmployees = async ()=>{
+
+  export const removeEmployee= async(dataEmployee)=>{
     
-    var employees = [];
-
-   var snap = await firestore.collection("employees").get();
-   await snap.docs.forEach(doc => employees.push(doc.data()))
-      
-
-    return employees;
+    try{
+       await firestore.doc(`employees/${dataEmployee.cnp}`).delete();
+       return true;
+    }catch(err){
+      console.log("Error while deleting " + err);
+      return false;
+    } 
 
   }
+
+  export const saveProduct = async (product)=>{
+   
+   try{
+    const employeeSnap = await firestore.collection("products").add({
+      ...product
+    })
+  }catch(err){
+    throw Error("Error while saving product " + err);
+  }
+  }
+
+
+
   export default firebase;

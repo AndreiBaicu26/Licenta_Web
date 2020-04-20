@@ -1,7 +1,9 @@
 import React from "react";
-import {Card, CardBody, Button, Collapse} from "shards-react";
+import {Card, CardBody, Button, Collapse,  Modal, ModalBody, ModalHeader, ModalFooter} from "shards-react";
+
 import "tachyons"
 import "./employeeCard.css"
+import { removeEmployee } from "../../firebase/utils";
 
 const collapseStyle = {
     zIndex:"1",
@@ -15,16 +17,29 @@ class EmployeeCard extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            collapse: false
+            collapse: false,
+            modalIsOpen:false
         }
     }
 
 
     toggleCollapse = () =>{
-        this.setState({collapse:!this.state.collapse})
+        this.setState({collapse:!this.state.collapse});
     }
 
+    toggleModal = ()=>{
+        this.setState({modalIsOpen:!this.state.modalIsOpen});
+    }
 
+    removeEmployee = async (e)=>{
+        if(await removeEmployee(e)===true){
+           
+            alert("Employee removed")
+            this.toggleModal();
+            
+        }else
+            alert("Failed while removing employee")
+    }
     render(){
 
         const employee = this.props.data;
@@ -33,9 +48,12 @@ class EmployeeCard extends React.Component{
             <Card style ={{zIndex:"2",maxWidth:"80%", marginTop:"20px", marginLeft:"10%"}} small>
                                 
                 <CardBody>
-                <div className="flex justify-around">
+                <div className="flex justify-between items-center">
                     <h2>{employee.firstName + " " + employee.lastName}</h2>
-                    <Button onClick = {()=>this.toggleCollapse()}>Toggle</Button>
+                    <div>
+                        <Button className="mr-3" onClick = {()=>this.toggleCollapse()}>More Info</Button>
+                        <Button theme="danger" onClick = {()=>this.toggleModal()}>Remove</Button>
+                    </div>
                  </div>
                 </CardBody>
                 
@@ -52,6 +70,22 @@ class EmployeeCard extends React.Component{
                     </ul>
                 </div>
             </Collapse>
+      
+        <Modal toggle = {this.toggleModal} open ={this.state.modalIsOpen}>
+            <ModalHeader style={{backgroundColor:"#DD4124", display:"inline-block"}}>
+                <div className="w-100 h-100 tc">
+                <h3 className={"white"} style={{align:"center"}}>Warning</h3>
+                </div>
+            </ModalHeader>
+            <ModalBody>
+                <p className="f3">Are you sure you want to remove</p>
+                <h3>{employee.lastName +" "+ employee.firstName + " ?"}</h3>
+            </ModalBody>
+            <ModalFooter style={{justifyContent:"space-around"}}>
+                <Button onClick={()=>this.removeEmployee(employee)}>Yes, remove</Button>
+                <Button onClick={()=>this.toggleModal()}>No</Button>
+            </ModalFooter>
+        </Modal>
         </div>
     )
     }

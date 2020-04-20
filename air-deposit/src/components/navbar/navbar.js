@@ -33,7 +33,7 @@ class NavBar extends React.Component {
   };
 
   changeActiveButton = (e)=>{
-    console.log(e.target.id)
+ 
     for(let i = 1; i <4; i++){
       if(e.target.id == i){
        

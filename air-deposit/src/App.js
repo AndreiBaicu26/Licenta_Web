@@ -12,11 +12,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "shards-ui/dist/css/shards.min.css";
 import "tachyons";
 
-const firebaseConfig = {};
 
-// firebase.initializeApp(firebaseConfig);
-// const db = firebase.firestore();
-// const firebaseProducts = db.collection("products");
 
 class App extends React.Component {
   constructor() {

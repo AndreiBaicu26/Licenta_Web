@@ -1,6 +1,6 @@
 import React from 'react';
 import 'tachyons';
-import { FormFeedback, Form, FormGroup, Container, Row, Col, Button, Modal, ModalBody, ModalHeader, FormInput, InputGroup} from "shards-react";
+import { FormFeedback, Form, FormGroup, Container, Row, Col, Button, Modal, ModalBody, ModalHeader, FormInput} from "shards-react";
 import {saveEmployee} from '../../firebase/utils'
 
 class EmployeeForm extends React.Component{
@@ -37,48 +37,50 @@ class EmployeeForm extends React.Component{
  
     validate = (event) =>{
 
-    switch(event.target.id){
+      switch(event.target.id){
 
-      case "email":
-        if(event.target.value.match(this.mailformat)){ 
-            
-          this.setState({email:{emailValid:true, emailInvalid:false }})
-         
-        }else
-          this.setState({email:{emailInvalid: true, emailValid:false }})
-          break;
+        case "email":
+          if(event.target.value.match(this.mailformat)){ 
+              
+            this.setState({email:{emailValid:true, emailInvalid:false }})
+          
+          }else
+            this.setState({email:{emailInvalid: true, emailValid:false }})
+            break;
 
-      case "fName":
-      
-        if(event.target.value.length > 3){  
-          this.setState({fName:{fNameValid:true, fNameInvalid:false }})
-        }else
+        case "fName":
         
-          this.setState({fName:{fNameInvalid: true, fNameValid:false }})
-          break;
+          if(event.target.value.length > 3){  
+            this.setState({fName:{fNameValid:true, fNameInvalid:false }})
+          }else
+          
+            this.setState({fName:{fNameInvalid: true, fNameValid:false }})
+            break;
 
-      case "lName":
-        event.target.setCustomValidity("Insert more than 3 characters");
-        if(event.target.value.length > 3){     
-          this.setState({lName:{lNameValid:true, lNameInvalid:false }})
-        }else
-          this.setState({lName:{lNameInvalid: true, lNameValid:false }})
-          break;
+        case "lName":
+          event.target.setCustomValidity("Insert more than 3 characters");
+          if(event.target.value.length > 3){     
+            this.setState({lName:{lNameValid:true, lNameInvalid:false }})
+          }else
+            this.setState({lName:{lNameInvalid: true, lNameValid:false }})
+            break;
 
-      case "cnp":
-        if(event.target.value.length === 13){     
-          this.setState({cnp:{cnpValid:true, cnpInvalid:false }})
-        }else
-          this.setState({cnp:{cnpInvalid: true, cnpValid:false }})
-          break;
-      default:return;
-    }
-  
+        case "cnp":
+          if(event.target.value.length === 13){     
+            this.setState({cnp:{cnpValid:true, cnpInvalid:false }})
+          }else
+            this.setState({cnp:{cnpInvalid: true, cnpValid:false }})
+            break;
+        default:return;
+      }
+    
   }
   
   componentWillMount(){
     this.setState({open:this.props.open})
   }
+
+  
   saveEmployee=async ()=>{
 
     const {email, fName, lName, cnp} = this.state;
@@ -141,7 +143,7 @@ class EmployeeForm extends React.Component{
     return (   
       <div>
       
-      <Modal size ="lg" open={this.props.open} toggle = {this.props.toggle}>
+      <Modal  size ="lg" open={this.props.open} toggle = {this.props.toggle}>
           <ModalHeader>Insert employee Info</ModalHeader>
           <ModalBody > 
          <Form>
@@ -224,7 +226,7 @@ class EmployeeForm extends React.Component{
                         backgroundColor:"DodgerBlue", 
                         color:"#fff"
                     }} onClick = {()=>this.saveEmployee()}>Submit</Button>
-                <FormFeedback tooltip={false} />
+         
             </Form>
           </ModalBody>        
         </Modal>
