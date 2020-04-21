@@ -1,7 +1,7 @@
 
 
 class Product {
-
+    documentId;
     name ="";
     noOfPlayers;
     price;
@@ -10,21 +10,22 @@ class Product {
     size;
     placesDeposited=[];
 
-    constructor(name, noOfPlayers, price, foh, boh, size){
+    constructor(name, noOfPlayers, price, foh, boh, size, documentId){
         
         this.name = name;
         this.noOfPlayers=noOfPlayers;
         this.price = price;
         this.foh = foh;
         this.boh = boh;
+        this.documentId = documentId;
         
         switch(size){
             case "small":
                 this.size = "small";break;
             case 'medium':
                 this.size = "medium";break;
-            case 'big':
-                this.size = "big";break;
+            case 'large':
+                this.size = "large";break;
             default:
                 throw Error(`Invalid property ${size}`);
         }
@@ -43,7 +44,9 @@ class Product {
         this.placesDeposited.splice(index,1);
     }
 
-
+    setDocumentId(id){
+        this.documentId = id;
+    }
 
 }
 

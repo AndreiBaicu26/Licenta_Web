@@ -16,125 +16,102 @@ import {
 } from "shards-react";
 import { saveProduct } from "../../firebase/utils";
 import Product from "../../classes/product";
+import "../../styles/form.css"
+const initState = {
+  selectedSize: "small",
+  open:false,
+  prodName:{ 
+        invalid:false,
+        prodNameValue:""
+  },
+  numPlayers: {
+        invalid:false,
+        numPlayersValue:""
+   },
+  price:{ 
+        invalid:false,
+        priceValue:""
+},
+  foh:{ 
+        invalid: false,
+        value:""
+},
+  boh:{
+        invalid: false,
+        value:""
+},
+  barcode:{
+    invalid:false,
+    value:""
+  }
+}
 
 class ProductForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      selectedSize: "small",
-      open:{ 
-            invalid: false,
-            openValue:""
-      },
-      prodName:{ 
-            invalid:false,
-            prodNameValue:""
-      },
-      numPlayers: {
-            invalid:false,
-            numPlayersValue:""
-       },
-      price:{ 
-            invalid:false,
-            priceValue:""
-    },
-      foh:{ 
-            invalid: false,
-            value:""
-    },
-      boh:{
-            invalid: false,
-            value:""
-    }
-    };
+    this.state = initState;
+  
+    
   }
 
   componentWillMount() {
     this.setState({ open: this.props.open });
   }
 
-  //   saveEmployee=async ()=>{
 
-  //     const {email, fName, lName, cnp} = this.state;
-  //     if(cnp.cnpValid && fName.fNameValid && lName.lNameValid && email.emailValid){
-  //         const employee={
-  //           firstName:document.getElementById("fName").value,
-  //           lastName:document.getElementById("lName").value,
-  //           phone:document.getElementById("phone").value,
-  //           email:document.getElementById("email").value,
-  //           cnp:document.getElementById("cnp").value
-  //         }
-  //       try{
-  //         await saveEmployee(employee);
-
-  //         alert("Employee added succsessfully")
-  //         this.props.toggle();
-
-  //       }catch(err)
-  //       {
-  //         console.log(err);
-  //        alert("Employee already in database")
-
-  //       }
-
-  //   }
-  //   }
 
   validate=()=>{
 
-    const {prodName, boh, foh,price, numPlayers} = this.state;
-    console.log("-------------" + prodName)
+    const {prodName, boh, foh,price, numPlayers, barcode} = this.state;
+   
     if(prodName.invalid === false && 
         boh.invalid=== false && 
         foh.invalid===false && 
         price.invalid===false && 
+        numPlayers.invalid===false &&
         numPlayers.invalid===false){
         if(prodName.prodNameValue.length> 0 &&
         foh.value.length> 0 &&
         boh.value.length > 0 &&
         numPlayers.numPlayersValue.length > 0 &&
-        price.priceValue.length > 0){
+        price.priceValue.length >0  &&
+        barcode.value.length > 0){
             return true;
         }
     }
     return false;
-}
+  }
 
-  saveProduct=()=>{
-    const {prodName, boh, foh,price, numPlayers} = this.state;
+  saveProduct= async()=>{
+    const {prodName, boh, foh,price, numPlayers,barcode} = this.state;
       if(this.validate()){
          let p = new Product(prodName.prodNameValue,
          numPlayers.numPlayersValue,
          price.priceValue,
          foh.value,
          boh.value,
-         this.state.selectedSize)
-         saveProduct(p)
-         this.props.toggle();
+         this.state.selectedSize,
+         barcode.value)
+         if(await saveProduct(p)===true){
+           alert("Product added");
+           this.props.toggle();
+         }else{
+          alert("Product already exists")
+         }
+        
       }
   }
 
   changeSize=(size)=>{
     this.setState({selectedSize:size})
   }
+
+
   changeState() {
-    // this.setState({email:{
-    //   emailValid: false,
-    //   emailInvalid: false
-    // },
-    // fName:{
-    //   fNameValid:false,
-    //   fNameInvalid:false
-    // },
-    // lName:{
-    //   lNameValid:false,
-    //   lNameInvalid:false
-    // },
-    // cnp:{
-    //   cnpValid:false,
-    //   cnpInvalid:false
-    // }})
+    
+    this.setState(initState)
+    this.setState({ open: true });
   }
 
 
@@ -157,7 +134,7 @@ class ProductForm extends React.Component {
     }
   }
 
-   handlePriceChange=(e)=>{
+  handlePriceChange=(e)=>{
         
         e.target.value=Number(e.target.value).toString();
      
@@ -166,9 +143,9 @@ class ProductForm extends React.Component {
         }else
                 this.setState({price:{invalid:false,priceValue:e.target.value}})
         
-    }
+  }
 
-    handleStockChange=(e)=>{
+  handleStockChange=(e)=>{
         e.target.value=parseInt(e.target.value).toString();
 
         if(e.target.value <0){
@@ -176,16 +153,16 @@ class ProductForm extends React.Component {
             this.setState({[e.target.name]:{invalid:true,value:e.target.value}})
         }else
             this.setState({[e.target.name]:{invalid:false,value:e.target.value}})
-    }
+  }
 
   render() {
-    // if (this.props.open === true && this.state.open === false) {
-    //   this.setState({ open: true });
-    // //   this.changeState();
-    // } else if (this.props.open === false && this.state.open === true) {
-    //   this.setState({ open: false });
-    // }
-    console.log(this.state.prodName);
+    if (this.props.open === true && this.state.open === false) {
+      
+      this.changeState();
+    } else if (this.props.open === false && this.state.open === true) {
+      this.setState({ open: false });
+    }
+   
     
     return (
       <div>
@@ -307,6 +284,21 @@ class ProductForm extends React.Component {
                     </FormRadio>
                     </div>
                 </div>
+
+                <FormGroup row={true}>
+                <FormInput
+                onChange = {event =>this.handleStockChange(event)}
+                  className=""
+                  type="number"
+                  placeholder="Barcode"
+                  name="barcode"
+                  invalid = {this.state.barcode.invalid}
+                ></FormInput>
+                <label className="ml3 mb0" htmlFor="barcode">
+                  Barcode
+                </label>
+                <FormFeedback invalid>Value can't be negative</FormFeedback>
+              </FormGroup>
               <Button
                 style={{
                   backgroundColor: "DodgerBlue",

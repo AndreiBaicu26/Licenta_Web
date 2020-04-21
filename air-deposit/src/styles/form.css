@@ -1,0 +1,11 @@
+label{
+    transition: all .3s;
+    display: block;
+}
+
+.form-control:placeholder-shown + label{ 
+    opacity: 0 !important; 
+    visibility: hidden !important;
+    transform: translateY(-2rem) !important;
+    margin-bottom: -10px !important;
+}

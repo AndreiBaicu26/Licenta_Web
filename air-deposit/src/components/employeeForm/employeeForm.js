@@ -2,7 +2,7 @@ import React from 'react';
 import 'tachyons';
 import { FormFeedback, Form, FormGroup, Container, Row, Col, Button, Modal, ModalBody, ModalHeader, FormInput} from "shards-react";
 import {saveEmployee} from '../../firebase/utils'
-
+import "../../styles/form.css"
 class EmployeeForm extends React.Component{
 
 
@@ -142,9 +142,9 @@ class EmployeeForm extends React.Component{
   
     return (   
       <div>
-      
+      "
       <Modal  size ="lg" open={this.props.open} toggle = {this.props.toggle}>
-          <ModalHeader>Insert employee Info</ModalHeader>
+          <ModalHeader toggle={this.props.toggle}>Insert employee Info</ModalHeader>
           <ModalBody > 
          <Form>
         
@@ -153,14 +153,16 @@ class EmployeeForm extends React.Component{
                     <Col className ="pl0">
                     <FormGroup className = "mt1 tl" >
                       <FormInput 
+                      className="numeros"
                         placeholder = "First name"
                         id ="fName"
                         valid = {this.state.fName.fNameValid}
                         invalid = {this.state.fName.fNameInvalid}
                         onChange={(e)=>this.validate(e)}>
                       </FormInput>
-                      <FormFeedback invalid>Not enough characters</FormFeedback>
-                        <label className ="ml3 mb0" htmlFor="fname">First name</label>
+                      
+                        <label className ="ml3 mb0" htmlFor="fName">First name</label>
+                        <FormFeedback invalid>Not enough characters</FormFeedback>
                        
                   </FormGroup>
                     </Col>
@@ -174,8 +176,9 @@ class EmployeeForm extends React.Component{
                         invalid = {this.state.lName.lNameInvalid}
                         onChange={(e)=>this.validate(e)}>
                       </FormInput>
-                      <FormFeedback invalid>Not enough characters</FormFeedback>
+                      
                         <label className ="ml3 mb0" htmlFor="lName">Last name</label>
+                        <FormFeedback invalid>Not enough characters</FormFeedback>
                   </FormGroup>
                     </Col>
                  </Row>
@@ -192,13 +195,14 @@ class EmployeeForm extends React.Component{
                        
                        >
                       </FormInput>
-                        <FormFeedback invalid>Not a valid email</FormFeedback>
+                        
                         <label className ="ml3 mb0" htmlFor="email">Email</label>
+                        <FormFeedback invalid>Not a valid email</FormFeedback>
                   </FormGroup>
 
                   <FormGroup  row={true}>
                       <FormInput 
-                        className="" 
+                        className="numeros" 
                         type="number" 
                         placeholder = "Phone number"
                         id ="phone">

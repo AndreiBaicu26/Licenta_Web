@@ -1,14 +1,20 @@
 import React from "react";
 import "tachyons";
 import {Button} from "shards-react";
-import ProductForm from "../../components/productForm/productForm";
+import ProductCard from "../../components/productCard/productCard";
+import ProductForm from "../../components/productForm/productForm"
+import SemipolarLoading from "react-loadingg/lib/SemipolarLoading";
+import { firestore } from "../../firebase/utils";
+import Product from "../../classes/product";
 
 class ProductsDashboard extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      modalOpen:false
+      modalOpen:false,
+      products: [],
+      noData:false
     };
   }
 
@@ -18,9 +24,58 @@ class ProductsDashboard extends React.Component {
    
   }
 
+  arrayOfProducts = [];
+  componentDidMount(){
+    
+    firestore.collection("products").onSnapshot(snap=>{
+     
+      let c = snap.docChanges();
+       this.arrayOfProducts = Array.from(this.state.products);
+    
+      c.forEach(change=>{
+        
+        if(change.type ==="added"){
+          var p = new Product(change.doc.data().name, change.doc.data().noOfPlayers,change.doc.data().price,change.doc.data().foh,change.doc.data().boh,change.doc.data().size,change.doc.id);
+
+          this.arrayOfProducts.push(p)        
+        }else{
+          if(change.type==="removed"){  
+
+            let itemToBeRemoved = this.arrayOfProducts.find(element => element === change.doc.data());         
+            let index = this.arrayOfProducts.indexOf(itemToBeRemoved);
+            
+            this.arrayOfProducts.splice(index,1);
+          
+          }
+        }
+         
+      })
+      
+      if(this.arrayOfProducts.length === 0){
+        this.setState({products:this.arrayOfProducts, noData:true})   
+      }else{ 
+        this.setState({products:this.arrayOfProducts, noData:false})
+      }
+
+    })
+  }
 
 
   render() {
+   
+      var cards = []
+  
+    if(this.state.products.length > 0){ 
+        cards = this.state.products.map((data,i)=>{
+            return(<ProductCard key={i} data ={data}></ProductCard>)
+          })
+
+    }else if(this.state.noData===false){
+      cards = <SemipolarLoading speed = {"0.7"}size={"large"} color={"#eeeeee"}></SemipolarLoading>
+    }else{
+      cards = <h1>No Products</h1>
+    }
+   
     return (
       <div>
         <ProductForm
@@ -39,10 +94,10 @@ class ProductsDashboard extends React.Component {
             </Button>
           </div>
           <div
-            style={{ zIndex: "0", overflow: "scroll" }}
+            style={{ zIndex: "0", overflow: "scroll" ,overflowX: "hidden"}}
             className="bg-blue w-100 h-100  items-center "
           >
-            <h1>Products</h1>
+            {cards}
           </div>
         </div>
       </div>

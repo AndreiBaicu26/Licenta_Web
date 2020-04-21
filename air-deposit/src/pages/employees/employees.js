@@ -36,12 +36,11 @@ class EmployeesDashboard extends React.Component {
       c.forEach(change=>{
         
         if(change.type ==="added"){ 
-          this.setState({removed:false})    
+
           this.arrayOfEmployees.push(change.doc.data())        
         }else{
           if(change.type==="removed"){  
-
-           
+  
             let itemToBeRemoved = this.arrayOfEmployees.find(element => element.cnp === change.doc.data().cnp);         
             let index = this.arrayOfEmployees.indexOf(itemToBeRemoved);
             
@@ -71,7 +70,7 @@ class EmployeesDashboard extends React.Component {
    var cards = [];
    if(this.state.employees.length > 0){
       cards = this.state.employees.map((data,i)=>{
-        return(<EmployeeCard remove = {this.employeeRemoved} key={i} data ={data}></EmployeeCard>)
+        return(<EmployeeCard  key={i} data ={data}></EmployeeCard>)
       })
    }else if(this.state.noData===false){
      cards = <SemipolarLoading speed = {"0.7"}size={"large"} color={"#eeeeee"}></SemipolarLoading>

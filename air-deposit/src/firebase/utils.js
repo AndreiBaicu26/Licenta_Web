@@ -55,22 +55,43 @@ var firebaseConfig = {
        await firestore.doc(`employees/${dataEmployee.cnp}`).delete();
        return true;
     }catch(err){
-      console.log("Error while deleting " + err);
-      return false;
+     throw Error("Error while deleting employee " + err);
+     
     } 
 
   }
 
   export const saveProduct = async (product)=>{
    
+
    try{
-    const employeeSnap = await firestore.collection("products").add({
-      ...product
-    })
+     const prodRef = firestore.doc(`products/${product.documentId}`);
+    const snap = await prodRef.get();
+    if(!snap.exists){
+      prodRef.set({
+        ...product
+      })
+      return true;
+    }else{
+      return false;
+    }
+
   }catch(err){
     throw Error("Error while saving product " + err);
   }
   }
+
+  export const removeProduct = async(product)=>{
+
+    try{
+      await firestore.doc(`products/${product.documentId}`).delete();
+      return true;
+    }catch(err){
+      throw Error("Error while deleting product " + err)
+     
+    }
+  }
+   
 
 
 

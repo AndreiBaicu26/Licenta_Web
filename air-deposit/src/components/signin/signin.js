@@ -39,7 +39,7 @@ class Signin extends React.Component{
         transform: 'translate(-50%, -50%)'
     }}>
       <Card  style={{maxWidth:'500px', width:'600px'}}>
-      <CardHeader className ='f3 calisto'style={{backgroundColor:'DodgerBlue', color:'white'}} /*style={{backgroundColor: 'aqua'}} */>Sign in into your manager account</CardHeader>
+      <CardHeader className ='f3 calisto'style={{backgroundColor:'DodgerBlue', color:'white'}} >Sign in into your manager account</CardHeader>
       <CardBody >
         <Form>
           <FormGroup>         

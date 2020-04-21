@@ -3,7 +3,8 @@ import {Card, CardBody, Button, Collapse,  Modal, ModalBody, ModalHeader, ModalF
 
 import "tachyons"
 import "../../styles/toggleStyle.css"
-import { removeEmployee } from "../../firebase/utils";
+import { removeProduct } from "../../firebase/utils";
+
 
 const collapseStyle = {
     zIndex:"1",
@@ -12,7 +13,8 @@ const collapseStyle = {
     marginLeft:"11%",
     marginRight:"11%"
 }
-class EmployeeCard extends React.Component{
+
+class ProductCard extends React.Component{
 
     constructor(props){
         super(props);
@@ -31,23 +33,23 @@ class EmployeeCard extends React.Component{
         this.setState({modalIsOpen:!this.state.modalIsOpen});
     }
 
-    removeEmployee = async (e)=>{
-        if(await removeEmployee(e)===true){
-            alert("Employee removed")
+    removeProduct = async (product)=>{
+        if(await removeProduct(product)===true){
+            alert("Product removed")
             this.toggleModal();
         }
-    }
+}
 
     render(){
 
-        const employee = this.props.data;
+        const product = this.props.data;
     return(
         <div>
             <Card style ={{zIndex:"2",maxWidth:"80%", marginTop:"20px", marginLeft:"10%"}} small>
                                 
                 <CardBody>
                 <div className="flex justify-between items-center">
-                    <h2>{employee.firstName + " " + employee.lastName}</h2>
+                    <h2>{product.name }</h2>
                     <div>
                         <Button className="mr-3" onClick = {()=>this.toggleCollapse()}>More Info</Button>
                         <Button theme="danger" onClick = {()=>this.toggleModal()}>Remove</Button>
@@ -57,16 +59,19 @@ class EmployeeCard extends React.Component{
                 
             </Card>
             <Collapse style ={collapseStyle} open={this.state.collapse}>
+          
                 <div className="p-3 mt-3 ba b--light-gray br3 bg-near-white">
                     <ul style={{textAlign:"left", columnCount:"2"}}>
-                        <li><span>First Name :</span>  {employee.firstName}</li>
-                        <li><span>Last Name :</span> {employee.lastName}</li>
-                        <li><span>CNP :</span> {employee.cnp}</li>
-                        <li><span>Email : </span>{employee.email}</li>
-                        <li><span>Phone :</span> {employee.phone}</li>
-                        <li><span>User ID : </span>{employee.id}</li>
-                    </ul>
+                        <li><span>Product Name :</span>  {product.name}</li>
+                        <li><span>Max number of players :</span> {product.noOfPlayers}</li>
+                        <li><span>Price :</span> {product.price}</li>
+                        <li><span>FOH : </span>{product.foh}</li>
+                        <li><span>BOH :</span> {product.boh}</li>
+                        <li><span>Size: </span>{product.size.toUpperCase()}</li>
+                        <li><span>Code : </span>{product.documentId}</li>
+                        </ul>
                 </div>
+
             </Collapse>
       
         <Modal toggle = {this.toggleModal} open ={this.state.modalIsOpen}>
@@ -77,10 +82,10 @@ class EmployeeCard extends React.Component{
             </ModalHeader>
             <ModalBody>
                 <p className="f3">Are you sure you want to remove</p>
-                <h3>{employee.lastName +" "+ employee.firstName + " ?"}</h3>
+                <h3>{product.name + " ?"}</h3>
             </ModalBody>
             <ModalFooter style={{justifyContent:"space-around"}}>
-                <Button onClick={()=>this.removeEmployee(employee)}>Yes, remove</Button>
+                <Button onClick={()=>this.removeProduct(product)}>Yes, remove</Button>
                 <Button onClick={()=>this.toggleModal()}>No</Button>
             </ModalFooter>
         </Modal>
@@ -89,4 +94,4 @@ class EmployeeCard extends React.Component{
     }
 }
 
-export default EmployeeCard
+export default ProductCard;
