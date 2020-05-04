@@ -87,10 +87,10 @@ class ProductForm extends React.Component {
     const {prodName, boh, foh,price, numPlayers,barcode} = this.state;
       if(this.validate()){
          let p = new Product(prodName.prodNameValue,
-         numPlayers.numPlayersValue,
-         price.priceValue,
-         foh.value,
-         boh.value,
+         parseInt(numPlayers.numPlayersValue),
+         parseFloat(price.priceValue),
+         parseInt(foh.value),
+         parseInt(boh.value),
          this.state.selectedSize,
          barcode.value)
          if(await saveProduct(p)===true){

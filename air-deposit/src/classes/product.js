@@ -8,7 +8,7 @@ class Product {
     foh;
     boh;
     size;
-    placesDeposited=[];
+    placesDeposited={};
 
     constructor(name, noOfPlayers, price, foh, boh, size, documentId){
         
