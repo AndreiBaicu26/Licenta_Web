@@ -8,29 +8,46 @@ import {
   FormGroup,
   Button
 } from 'shards-react';
+import { getEmployee } from '../../firebase/utils';
 import './signin.css';
 import 'tachyons';
 
-class Signin extends React.Component{
+export var userLogged;
+const  setUser = (user)=>{
+  userLogged = user;
+}
+
+
+
+class  Signin extends React.Component{
     constructor(props){
         super(props);
         this.state= {
 
         }
     }
-
-    onSignInButtonClicked = (event)=>{
-        const user = document.getElementById('#username');
-        const pass = document.getElementById('#password');
-
-        const userText = user.value;
-        const passText = pass.value;
-        if(userText === 'admin' && passText === 'admin'){
-            this.props.onSignIn('dashboard');
-        }
-    }
-
     
+    currentUser;
+    
+    onSignInButtonClicked =  (event)=>{
+        const user = document.getElementById('#username');
+      
+
+        getEmployee(user.value).then(
+          response =>{
+           
+            if(response!== false){
+              setUser(response);
+              this.currentUser = response;
+              this.props.onSignIn('dashboard');
+          }else{
+            alert("You are not a manager");
+          }
+          }
+        );
+        
+       
+    }
 
   render(){
   return (
@@ -43,14 +60,11 @@ class Signin extends React.Component{
       <CardBody >
         <Form>
           <FormGroup>         
-              <label className="user__label" htmlFor="#username">Username</label>
-              <FormInput  id="#username" placeholder="Username" />
+              <label className="user__label" htmlFor="#username">Your ID</label>
+              <FormInput  id="#username" placeholder="ID" />
               
           </FormGroup>
-          <FormGroup>   
-            <label className="pass__label"htmlFor="#password">Password</label>
-            <FormInput type="password" id="#password" placeholder="Password" />
-          </FormGroup>
+         
         </Form>
         <Button onClick = {this.onSignInButtonClicked} style={{position: 'relative', left: '40%', top: '90%',fontFamily:'calisto', fontSize:'17px'}} className ='mt3 f3 calisto'>Sign In</Button>
       </CardBody>
@@ -60,4 +74,9 @@ class Signin extends React.Component{
 }
 };
 
+
+
 export default Signin;
+
+
+

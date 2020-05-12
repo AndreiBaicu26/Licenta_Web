@@ -43,7 +43,7 @@ class App extends React.Component {
                 <ProductsDashboard />
               </Route>
               <Route path="/employees">
-                <EmployeesDashboard />
+                <EmployeesDashboard onSignIn={this.onSignIn} />
               </Route>
             </Switch>
           </Router>

@@ -1,6 +1,9 @@
-import firebase from 'firebase/app';
-import 'firebase/firestore';
 
+
+
+import * as firebase from "firebase/app"
+import 'firebase/firestore'
+import 'firebase/functions'
 var firebaseConfig = {
     apiKey: "AIzaSyBnd2CziUijN3RzZ9vVa32g4zMKiS8o9UU",
     authDomain: "air-deposit.firebaseapp.com",
@@ -15,8 +18,11 @@ var firebaseConfig = {
   firebase.initializeApp(firebaseConfig);
 
 
+
+
   export const firestore = firebase.firestore();
 
+  export const functions = firebase.functions();
 
   export const saveEmployee = async(employeeData)=>{
 
@@ -62,15 +68,15 @@ var firebaseConfig = {
   }
 
   export const saveProduct = async (product)=>{
-   
-
+    
+   // const product = Object.assign({}, productToBeAssigned)
    try{
      const prodRef = firestore.doc(`products/${product.documentId}`);
     const snap = await prodRef.get();
     if(!snap.exists){
-      prodRef.set({
-        ...product
-      })
+      prodRef.set(
+        Object.assign({},product)
+      )
       return true;
     }else{
       return false;
@@ -84,6 +90,7 @@ var firebaseConfig = {
   export const removeProduct = async(product)=>{
 
     try{
+  
       await firestore.doc(`products/${product.documentId}`).delete();
       return true;
     }catch(err){
@@ -92,7 +99,78 @@ var firebaseConfig = {
     }
   }
    
+  export const getEmployee =async (employeeID)=>{
+    console.log("got in firebase", employeeID)
+   
+    const response = firestore.collection("employees").where("id", "==",Number.parseInt(employeeID))
+    .get()
+    .then(function(querySnapshot) {
+      console.log(querySnapshot)
+        var currentLogged;
+        var isManager = false;
 
+        querySnapshot.forEach(function(doc) {
+          console.log("-----",doc.data());
+          if(doc.data().manager === true){
+            isManager = true;
+            currentLogged = doc.data();
+          }
+          
+           
+        });
+
+        if(isManager) return currentLogged
+          else
+           return false;
+        
+    })
+    .catch(function(error) {
+        console.log("Error getting documents: ", error);
+    });
+
+
+    return response;
+  }
+
+  export const promoteEmployee = async (employee) =>{
+   
+    try{
+
+     await firestore.doc(`employees/${employee.cnp}`).update("manager", true);
+    return true;
+    }catch(err){
+      return false;
+    }
+
+  }
+
+
+  export const demoteEmployee = async (employee) =>{
+   
+    try{
+
+      const a = await firestore.collection("employees").where("manager", "==" ,true ).get();
+      let count = 0;
+      a.forEach(doc =>{
+        if(doc.exists){
+          count++;
+        }
+      });
+
+      if(count > 1 ){
+        await firestore.doc(`employees/${employee.cnp}`).update("manager", false);
+        return true;
+      }else{
+        return false;
+      }
+    }catch(err){
+      throw Error("Error while updating employee");
+    }
+
+  }
+
+ 
+  
 
 
   export default firebase;

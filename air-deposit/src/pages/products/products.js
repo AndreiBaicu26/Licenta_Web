@@ -35,18 +35,24 @@ class ProductsDashboard extends React.Component {
       c.forEach(change=>{
         
         if(change.type ==="added"){
-          var p = new Product(change.doc.data().name, change.doc.data().noOfPlayers,change.doc.data().price,change.doc.data().foh,change.doc.data().boh,change.doc.data().size,change.doc.id);
-
+          var p = new Product(change.doc.data().name, change.doc.data().noOfPlayers,change.doc.data().price,change.doc.data().foh,change.doc.data().boh,change.doc.data().size,change.doc.id,change.doc.data().alertAt);
+  
+          p.addDeposit((change.doc.data().placesDeposited))
+            
           this.arrayOfProducts.push(p)        
         }else{
           if(change.type==="removed"){  
 
-            let itemToBeRemoved = this.arrayOfProducts.find(element => element === change.doc.data());         
+            let itemToBeRemoved = this.arrayOfProducts.find(element => element.documentId === change.doc.data().documentId);         
             let index = this.arrayOfProducts.indexOf(itemToBeRemoved);
             
             this.arrayOfProducts.splice(index,1);
           
-          }
+          }else{if(change.type==="modified"){
+            let itemToBeUpdated = this.arrayOfProducts.find(element => element.documentId === change.doc.data().documentId);         
+            let index = this.arrayOfProducts.indexOf(itemToBeUpdated);
+            this.arrayOfProducts[index] = change.doc.data();
+          }}
         }
          
       })

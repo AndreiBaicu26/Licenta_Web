@@ -92,7 +92,7 @@ class ProductForm extends React.Component {
          parseInt(foh.value),
          parseInt(boh.value),
          this.state.selectedSize,
-         barcode.value)
+         barcode.value,0)
          if(await saveProduct(p)===true){
            alert("Product added");
            this.props.toggle();

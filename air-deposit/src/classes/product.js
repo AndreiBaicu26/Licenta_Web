@@ -8,9 +8,10 @@ class Product {
     foh;
     boh;
     size;
-    placesDeposited={};
+    placesDeposited= {};
+    alertAt;
 
-    constructor(name, noOfPlayers, price, foh, boh, size, documentId){
+    constructor(name, noOfPlayers, price, foh, boh, size, documentId,alertAt){
         
         this.name = name;
         this.noOfPlayers=noOfPlayers;
@@ -18,7 +19,7 @@ class Product {
         this.foh = foh;
         this.boh = boh;
         this.documentId = documentId;
-        
+        this.alertAt = alertAt;
         switch(size){
             case "small":
                 this.size = "small";break;
@@ -33,8 +34,9 @@ class Product {
     }
 
 
-    addDeposit(depositId){
-        this.placesDeposited.push(depositId);
+    addDeposit(value){
+        
+        this.placesDeposited = value;
     }
 
 

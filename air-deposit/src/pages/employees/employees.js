@@ -46,8 +46,16 @@ class EmployeesDashboard extends React.Component {
             
             this.arrayOfEmployees.splice(index,1);
           
+          }else{
+            if(change.type==="modified"){  
+  
+              let itemToBeUpdated = this.arrayOfEmployees.find(element => element.cnp === change.doc.data().cnp);         
+              let index = this.arrayOfEmployees.indexOf(itemToBeUpdated);
+              this.arrayOfEmployees[index] = change.doc.data();
+              
           }
         }
+      }
          
       })
       
@@ -70,7 +78,7 @@ class EmployeesDashboard extends React.Component {
    var cards = [];
    if(this.state.employees.length > 0){
       cards = this.state.employees.map((data,i)=>{
-        return(<EmployeeCard  key={i} data ={data}></EmployeeCard>)
+        return(<EmployeeCard  key={i} data ={data} onSignIn={this.props.onSignIn} ></EmployeeCard>)
       })
    }else if(this.state.noData===false){
      cards = <SemipolarLoading speed = {"0.7"}size={"large"} color={"#eeeeee"}></SemipolarLoading>

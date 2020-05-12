@@ -90,7 +90,8 @@ class EmployeeForm extends React.Component{
           lastName:document.getElementById("lName").value,
           phone:document.getElementById("phone").value,
           email:document.getElementById("email").value,
-          cnp:document.getElementById("cnp").value
+          cnp:document.getElementById("cnp").value,
+          manager:false
         }
       try{
         await saveEmployee(employee);
@@ -142,7 +143,6 @@ class EmployeeForm extends React.Component{
   
     return (   
       <div>
-      "
       <Modal  size ="lg" open={this.props.open} toggle = {this.props.toggle}>
           <ModalHeader toggle={this.props.toggle}>Insert employee Info</ModalHeader>
           <ModalBody > 

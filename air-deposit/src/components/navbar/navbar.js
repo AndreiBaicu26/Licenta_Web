@@ -87,6 +87,7 @@ class NavBar extends React.Component {
         </div>
 
         <div className="nav__log-out">
+        <Link to ="/">
           <Button
             onClick={() => this.props.onSignIn("signin")}
             size="lg"
@@ -95,6 +96,7 @@ class NavBar extends React.Component {
           >
             LOG OUT
           </Button>
+          </Link>
         </div>
       </nav>
     );
