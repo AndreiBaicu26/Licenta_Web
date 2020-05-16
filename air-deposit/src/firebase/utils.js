@@ -4,6 +4,8 @@
 import * as firebase from "firebase/app"
 import 'firebase/firestore'
 import 'firebase/functions'
+
+
 var firebaseConfig = {
     apiKey: "AIzaSyBnd2CziUijN3RzZ9vVa32g4zMKiS8o9UU",
     authDomain: "air-deposit.firebaseapp.com",
@@ -144,6 +146,41 @@ var firebaseConfig = {
 
   }
 
+
+  export const getSales = async (month)=>{
+
+  
+   const snap = await  firestore.collection("sales").get();
+
+   var salesToBeReturned = [];
+    snap.docs.forEach(map =>{
+
+      var date = map.data().dateCreated.toDate().getMonth();
+     
+      if(date === month){
+        salesToBeReturned.push(map.data())
+      }
+    })
+
+
+    return salesToBeReturned; 
+  }
+
+  
+
+  export const getProducts = async ()=>{
+
+  
+    const snap = await  firestore.collection("products").get();
+ 
+    var productsToBeReturned = [];
+     snap.docs.forEach(doc=>{
+      productsToBeReturned.push(doc.data().name)
+     })
+ 
+ 
+     return productsToBeReturned; 
+   }
 
   export const demoteEmployee = async (employee) =>{
    
