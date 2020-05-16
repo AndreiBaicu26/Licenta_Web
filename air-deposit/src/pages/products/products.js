@@ -1,11 +1,16 @@
 import React from "react";
 import "tachyons";
-import {Button} from "shards-react";
+import {Button, FormInput} from "shards-react";
 import ProductCard from "../../components/productCard/productCard";
 import ProductForm from "../../components/productForm/productForm"
 import SemipolarLoading from "react-loadingg/lib/SemipolarLoading";
 import { firestore } from "../../firebase/utils";
 import Product from "../../classes/product";
+import "./products.css"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
+
+const search = <FontAwesomeIcon icon={faSearch} />
 
 class ProductsDashboard extends React.Component {
 
@@ -14,10 +19,14 @@ class ProductsDashboard extends React.Component {
     this.state = {
       modalOpen:false,
       products: [],
-      noData:false
+      noData:false,
+      inputText: ""
     };
   }
 
+  handleTextChange = (e) =>{
+    this.setState({inputText:e.target.value});
+  }
 
   toggleModal= () =>{
     this.setState({modalOpen:!this.state.modalOpen});
@@ -25,6 +34,7 @@ class ProductsDashboard extends React.Component {
   }
 
   arrayOfProducts = [];
+
   componentDidMount(){
     
     firestore.collection("products").onSnapshot(snap=>{
@@ -66,14 +76,18 @@ class ProductsDashboard extends React.Component {
     })
   }
 
-
+ 
   render() {
    
-      var cards = []
+    var cards = []
   
     if(this.state.products.length > 0){ 
+
         cards = this.state.products.map((data,i)=>{
+          console.log(data)
+          if(data.name.toUpperCase().includes(this.state.inputText.toUpperCase())){
             return(<ProductCard key={i} data ={data}></ProductCard>)
+          }
           })
 
     }else if(this.state.noData===false){
@@ -103,6 +117,11 @@ class ProductsDashboard extends React.Component {
             style={{ zIndex: "0", overflow: "scroll" ,overflowX: "hidden"}}
             className="bg-blue w-100 h-100  items-center "
           >
+          <div>
+            <input onChange={(e)=>this.handleTextChange(e)} placeholder="Search barcode or name..." class="Search-box" id="Search-box" autocomplete="off" ></input>
+            {search}
+        
+            </div>
             {cards}
           </div>
         </div>

@@ -34,7 +34,7 @@ class NavBar extends React.Component {
 
   changeActiveButton = (e)=>{
  
-    for(let i = 1; i <4; i++){
+    for(let i = 1; i <3; i++){
       if(e.target.id == i){
        
         e.target.setAttribute("class", this.active);
@@ -64,7 +64,7 @@ class NavBar extends React.Component {
           </Link>
           <Link to="employees">
             <Button
-              style={{ borderRadius: "0" }}
+              style={buttonSecondStyle}
               id="2"
             
               size="lg"
@@ -73,7 +73,7 @@ class NavBar extends React.Component {
               className="btn_empl">Employees
             </Button>
           </Link>
-          <Link to="statistics">
+          {/* <Link to="statistics">
             <Button
               style={buttonSecondStyle}
               id="3"
@@ -83,7 +83,7 @@ class NavBar extends React.Component {
               theme="info"
               className="btn_stat">Statistics
             </Button>
-          </Link>
+          </Link> */}
         </div>
 
         <div className="nav__log-out">

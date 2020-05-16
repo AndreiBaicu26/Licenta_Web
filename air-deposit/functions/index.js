@@ -47,6 +47,8 @@ exports.updateProduct = functions.firestore
 
     });
 
+
+    
 exports.addAlertToProduct = functions.https.onCall((data,context)=>{
  
   const alertAt = data.alertAt;

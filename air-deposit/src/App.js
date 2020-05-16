@@ -3,7 +3,7 @@ import "./App.css";
 //import firebase from "firebase";
 import "tachyons";
 import NavBar from "./components/navbar/navbar";
-import { Switch, Route, BrowserRouter as Router  } from "react-router-dom";
+import { Switch, Route, Redirect, BrowserRouter as Router  } from "react-router-dom";
 import ProductsDashboard from "./pages/products/products";
 import EmployeesDashboard from "./pages/employees/employees";
 import StatisticsDashboard from "./pages/statistics/statistics";
@@ -18,7 +18,7 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      route: "signi",
+      route: "signin",
     };
   }
 
@@ -31,6 +31,7 @@ class App extends React.Component {
     if (this.state.route === "signin") {
       return <Signin onSignIn={this.onSignIn}></Signin>;
     } else
+      
       return (
         <div className="App">
           <Router>

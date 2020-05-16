@@ -42,9 +42,11 @@ class EmployeeCard extends React.Component{
     }
 
     removeEmployee = async (e)=>{
+        this.toggleModal();
         if(await removeEmployee(e)===true){
+            
             alert("Employee removed")
-            this.toggleModal();
+            
         }
     }
 

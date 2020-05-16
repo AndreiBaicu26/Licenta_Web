@@ -11,6 +11,8 @@ import {
 import { getEmployee } from '../../firebase/utils';
 import './signin.css';
 import 'tachyons';
+import { Redirect, BrowserRouter } from "react-router-dom";
+
 
 export var userLogged;
 const  setUser = (user)=>{
@@ -23,9 +25,9 @@ class  Signin extends React.Component{
     constructor(props){
         super(props);
         this.state= {
-
+       
         }
-    }
+      }
     
     currentUser;
     
@@ -40,6 +42,7 @@ class  Signin extends React.Component{
               setUser(response);
               this.currentUser = response;
               this.props.onSignIn('dashboard');
+            
           }else{
             alert("You are not a manager");
           }
@@ -51,10 +54,12 @@ class  Signin extends React.Component{
 
   render(){
   return (
+    <BrowserRouter>
     <div style={{
         position: 'absolute', left: '50%', top: '50%',
         transform: 'translate(-50%, -50%)'
     }}>
+    
       <Card  style={{maxWidth:'500px', width:'600px'}}>
       <CardHeader className ='f3 calisto'style={{backgroundColor:'DodgerBlue', color:'white'}} >Sign in into your manager account</CardHeader>
       <CardBody >
@@ -70,6 +75,7 @@ class  Signin extends React.Component{
       </CardBody>
     </Card>
     </div>
+    </BrowserRouter>
   );
 }
 };
