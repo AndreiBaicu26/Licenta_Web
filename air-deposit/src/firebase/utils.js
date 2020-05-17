@@ -155,11 +155,12 @@ var firebaseConfig = {
    var salesToBeReturned = [];
     snap.docs.forEach(map =>{
 
-      var date = map.data().dateCreated.toDate().getMonth();
+      // var date = map.data().dateCreated.toDate().getMonth();
      
-      if(date === month){
-        salesToBeReturned.push(map.data())
-      }
+      // if(date === month){
+      //   salesToBeReturned.push(map.data())
+      // }
+      salesToBeReturned.push(map.data());
     })
 
 

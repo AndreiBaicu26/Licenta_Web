@@ -56,22 +56,24 @@ class BarChartProductsSales extends PureComponent {
             data: [],
             selectedTypeOfChart: "revenue",
             sales :[],
-            products:[]
+            products:[],
+            monthSelected:0
         };
      
     }
+    selectedOption = 0;
 
     
 
    async componentDidMount() {
        
        await this.loadData();
-   
+       
        if(this.state.products.length > 0){
-        this.mapData();    
+          this.mapData(0);    
        }
         this.updateWindowDimensions();
-
+       
         window.addEventListener('resize', () => this.updateWindowDimensions());
     }
 
@@ -80,13 +82,15 @@ class BarChartProductsSales extends PureComponent {
     }
 
     updateWindowDimensions() {
+        if(document.getElementById("cardBar")!==null){
         const width = document.getElementById("cardBar").offsetWidth
         console.log(width)
         this.setState({ width: width, height: window.innerHeight });
+        }
     }
 
     
-
+    
 
     daysInMonth(month, year) {
         return new Date(year, month, 0).getDate();
@@ -95,21 +99,33 @@ class BarChartProductsSales extends PureComponent {
 
 
 
-    mapData = (option = "revenue") =>{
+    mapData = (monthSelected,option = "revenue") =>{
         var days = this.daysInMonth(4, 2020);
         var salesData = [];
         var dataToBeShown = [];
+ 
+  
+        var salesInSelectedMonth;
+  
+        salesInSelectedMonth = this.state.sales.filter(sale =>{
+            
+            return sale.dateCreated.toDate().getMonth() === parseInt(monthSelected)
+        });
+    
+   
         for (let i = 0; i < days; i++) {
 
             dataToBeShown[i] = {};
+
             for (let prodNames = 0; prodNames < this.state.products.length; prodNames++) {
                 dataToBeShown[i][this.state.products[prodNames]] = 0;
             }
-            dataToBeShown[i]["day"] = i;
 
+            dataToBeShown[i]["day"] = i +1 ;
+  
+            salesData[i] = salesInSelectedMonth.filter(sale => sale.dateCreated.toDate().getDate() === i);
 
-            salesData[i] = this.state.sales.filter(sale => sale.dateCreated.toDate().getDate() === i);
-
+          
             if (salesData[i].length > 0) {
                 var hashMap = new Map();
                 var hashTotalItemsSold = new Map();
@@ -121,7 +137,7 @@ class BarChartProductsSales extends PureComponent {
                         hashTotalItemsSold.set(prodName, hashTotalItemsSold.get(prodName) + 1);
                     } else {
                         hashMap.set(prodName, prodPrice);
-                        hashTotalItemsSold.set(prodName, 0);
+                        hashTotalItemsSold.set(prodName, 1);
                     }
 
                 }
@@ -151,9 +167,10 @@ class BarChartProductsSales extends PureComponent {
     }
 
     loadData = async () => {
-
+        const month = this.getOptionSelected();
+        console.log("month", month)
         const prod = await getProducts();
-         const sal = await getSales(4);
+         const sal = await getSales(month);
     
          this.setState({products: prod, sales:sal})
      
@@ -171,12 +188,21 @@ class BarChartProductsSales extends PureComponent {
 
 
     changeData = (option) => {
-        this.mapData(option)
+
+        this.mapData(this.selectedOption,option)
         this.setState({
             selectedTypeOfChart: option
         });
     }
 
+    
+    getOptionSelected = ()=>{
+        
+        var select = document.getElementById("formSelect");
+        var optionSelected = select.options[select.selectedIndex].value;
+        this.selectedOption = optionSelected;
+        this.mapData(optionSelected,this.state.selectedTypeOfChart);
+    }   
 
     render() {
 
@@ -216,7 +242,7 @@ class BarChartProductsSales extends PureComponent {
                             </FormRadio>
                             </div>
                             <div className ="dropDown">
-                            <FormSelect  style = {{flex:"2"}}>
+                            <FormSelect onChange={()=>this.getOptionSelected()} id ={"formSelect"} style = {{flex:"2"}}>
                                    
                                     <option value="0">January</option>
                                     <option value="1">February</option>
