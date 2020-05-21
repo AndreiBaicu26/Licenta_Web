@@ -17,6 +17,7 @@ import {
 import { saveProduct } from "../../firebase/utils";
 import Product from "../../classes/product";
 import "../../styles/form.css"
+
 const initState = {
   selectedSize: "small",
   open:false,
@@ -36,10 +37,10 @@ const initState = {
         invalid: false,
         value:""
 },
-  boh:{
-        invalid: false,
-        value:""
-},
+//   boh:{
+//         invalid: false,
+//         value:""
+// },
   barcode:{
     invalid:false,
     value:""
@@ -63,17 +64,17 @@ class ProductForm extends React.Component {
 
   validate=()=>{
 
-    const {prodName, boh, foh,price, numPlayers, barcode} = this.state;
+    const {prodName, foh,price, numPlayers, barcode} = this.state;
    
     if(prodName.invalid === false && 
-        boh.invalid=== false && 
+        // boh.invalid=== false && 
         foh.invalid===false && 
         price.invalid===false && 
         numPlayers.invalid===false &&
         numPlayers.invalid===false){
         if(prodName.prodNameValue.length> 0 &&
         foh.value.length> 0 &&
-        boh.value.length > 0 &&
+        // boh.value.length > 0 &&
         numPlayers.numPlayersValue.length > 0 &&
         price.priceValue.length >0  &&
         barcode.value.length > 0){
@@ -90,7 +91,7 @@ class ProductForm extends React.Component {
          parseInt(numPlayers.numPlayersValue),
          parseFloat(price.priceValue),
          parseInt(foh.value),
-         parseInt(boh.value),
+         0,
          this.state.selectedSize,
          barcode.value,0)
          if(await saveProduct(p)===true){
@@ -234,7 +235,7 @@ class ProductForm extends React.Component {
                 <FormFeedback invalid>Value can't be negative</FormFeedback>
               </FormGroup>
 
-              <FormGroup row={true}>
+              {/* <FormGroup row={true}>
                 <FormInput
                 onChange = {event =>this.handleStockChange(event)}
                   className=""
@@ -247,7 +248,7 @@ class ProductForm extends React.Component {
                   Back of House
                 </label>
                 <FormFeedback invalid>Value can't be negative</FormFeedback>
-              </FormGroup>
+              </FormGroup> */}
 
               <div className ="radioButtonsSize">
                     <p className="mb-2">Select product size: </p>

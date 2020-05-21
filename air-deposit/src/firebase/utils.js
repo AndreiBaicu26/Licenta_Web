@@ -208,7 +208,23 @@ var firebaseConfig = {
   }
 
  
-  
-
+  export const saveProvider = async(provider) =>{
+    try{
+      
+      const providerRef = firestore.doc(`providers/${provider.name}`);
+      const snap = await providerRef.get();
+     if(!snap.exists){
+       providerRef.set(
+         Object.assign({},provider)
+       )
+       return true;
+     }else{
+       return false;
+     }
+ 
+   }catch(err){
+     throw Error ("Error while saving")
+   }
+  }
 
   export default firebase;

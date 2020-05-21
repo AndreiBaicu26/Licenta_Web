@@ -3,12 +3,14 @@ import "tachyons";
 import {Button, FormInput} from "shards-react";
 import ProductCard from "../../components/productCard/productCard";
 import ProductForm from "../../components/productForm/productForm"
+import ProviderForm from "../../components/providerForm/ProviderForm";
 import SemipolarLoading from "react-loadingg/lib/SemipolarLoading";
 import { firestore } from "../../firebase/utils";
 import Product from "../../classes/product";
 import "./products.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
+
 
 const search = <FontAwesomeIcon icon={faSearch} />
 
@@ -18,6 +20,7 @@ class ProductsDashboard extends React.Component {
     super(props);
     this.state = {
       modalOpen:false,
+      providerModalOpen:false,
       products: [],
       noData:false,
       inputText: ""
@@ -31,6 +34,10 @@ class ProductsDashboard extends React.Component {
   toggleModal= () =>{
     this.setState({modalOpen:!this.state.modalOpen});
    
+  }
+
+  toggleProviderModal = () =>{
+    this.setState({providerModalOpen:!this.state.providerModalOpen});
   }
 
   arrayOfProducts = [];
@@ -101,16 +108,27 @@ class ProductsDashboard extends React.Component {
         <ProductForm
           open={this.state.modalOpen}
           toggle={this.toggleModal}
-        ></ProductForm>
+        />
 
+        <ProviderForm
+          open = {this.state.providerModalOpen}
+          toggle = {this.toggleProviderModal}
+        />
+        
         <div className="flex w-100 vh-100 justify-around">
-          <div className=" bg-green w-20 h-10 flex items-center">
+          <div className=" bg-green w-20 h-10 flex flex-column items-center justify-center">
             <Button
-              style={{ margin: "auto" }}
+              
               size="lg"
               theme="success"
               onClick={()=>this.toggleModal()}
             > Add new product
+            </Button>
+            <Button
+              style ={{marginTop:"2.5rem"}}
+              size="lg"
+              onClick={()=>this.toggleProviderModal()}
+            > Add new provider
             </Button>
           </div>
           <div
