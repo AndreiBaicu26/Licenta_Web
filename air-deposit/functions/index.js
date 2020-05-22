@@ -1,11 +1,11 @@
 const functions = require('firebase-functions');
 
 const admin = require('firebase-admin');
-const nodemailer = require('nodemailer');
+//const nodemailer = require('nodemailer');
 admin.initializeApp();
-require('dotenv').config();
+//require('dotenv').config();
 
-const {EMAIL, PASSWORD} = process.env;
+//const {EMAIL, PASSWORD} = process.env;
 
 
 
@@ -13,13 +13,17 @@ const sendEmail = (product)=>{
 
 
   const send = require('gmail-send')({
-    user: EMAIL,
-    pass: PASSWORD,
+    user: "baicuandrei17@stud.ase.ro",
+    pass: "calotadenisa14",
     to:   'baicuandrei62@gmail.com',
     subject: `Stock Alert on product: ${product.name}`,
   });
 
-  send({ text:  `You only have ${product.foh + product.boh} ${product.name} left in your store.`
+  send({ text:  `You only have ${product.foh + product.boh} ${product.name} left in your store.\n\n
+  Please contact this product's Provider: \n
+  Name: ${product.provider.name}\n
+  Email: ${product.provider.email}\n
+  Phone: ${product.provider.phone}`
 },
 (err)=>{console.log(err)})
 

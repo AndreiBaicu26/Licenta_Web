@@ -1,6 +1,4 @@
 
-
-
 import * as firebase from "firebase/app"
 import 'firebase/firestore'
 import 'firebase/functions'
@@ -71,14 +69,18 @@ var firebaseConfig = {
 
   export const saveProduct = async (product)=>{
     
-   // const product = Object.assign({}, productToBeAssigned)
    try{
      const prodRef = firestore.doc(`products/${product.documentId}`);
     const snap = await prodRef.get();
+    
     if(!snap.exists){
       prodRef.set(
-        Object.assign({},product)
-      )
+        
+        Object.assign({},product),
+        
+         
+        
+        )
       return true;
     }else{
       return false;
@@ -226,5 +228,32 @@ var firebaseConfig = {
      throw Error ("Error while saving")
    }
   }
+
+  export const getProvider = async()=>{
+
+    const snap = await firestore.collection("providers").get();
+ 
+    var providersToBeReturned = [];
+     snap.docs.forEach(doc=>{
+      providersToBeReturned.push(doc.data())
+     })
+ 
+ 
+     return providersToBeReturned; 
+    
+  }
+
+  export const removeProvider = async(provider)=>{
+
+    try{
+  
+      await firestore.doc(`providers/${provider.name}`).delete();
+      return true;
+    }catch(err){
+      return false;
+     
+    }
+  }
+
 
   export default firebase;

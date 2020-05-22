@@ -97,8 +97,6 @@ class BarChartProductsSales extends PureComponent {
     }
 
 
-
-
     mapData = (monthSelected,option = "revenue") =>{
         var days = this.daysInMonth(4, 2020);
         var salesData = [];
@@ -117,8 +115,8 @@ class BarChartProductsSales extends PureComponent {
 
             dataToBeShown[i] = {};
 
-            for (let prodNames = 0; prodNames < this.state.products.length; prodNames++) {
-                dataToBeShown[i][this.state.products[prodNames]] = 0;
+            for(let y = 0; y < this.state.sales.length; y++){
+                dataToBeShown[i][this.state.sales[y].product.name] = 0;
             }
 
             dataToBeShown[i]["day"] = i +1 ;
@@ -168,7 +166,7 @@ class BarChartProductsSales extends PureComponent {
 
     loadData = async () => {
         const month = this.getOptionSelected();
-        console.log("month", month)
+        
         const prod = await getProducts();
          const sal = await getSales(month);
     

@@ -10,6 +10,7 @@ class Product {
     size;
     placesDeposited= {};
     alertAt;
+    provider ={}
 
     constructor(name, noOfPlayers, price, foh, boh, size, documentId,alertAt){
         
@@ -20,6 +21,7 @@ class Product {
         this.boh = boh;
         this.documentId = documentId;
         this.alertAt = alertAt;
+  
         switch(size){
             case "small":
                 this.size = "small";break;
@@ -37,6 +39,11 @@ class Product {
     addDeposit(value){
         
         this.placesDeposited = value;
+    }
+    
+
+    addProvider(provider){
+        this.provider = provider;
     }
 
 

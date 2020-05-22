@@ -11,6 +11,7 @@ import Signin from "./components/signin/signin";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "shards-ui/dist/css/shards.min.css";
 import "tachyons";
+import ProvidersDashboard from "./pages/providers/provider";
 
 
 
@@ -37,6 +38,9 @@ class App extends React.Component {
           <Router>
             <NavBar onChange={this.onChange} onSignIn={this.onSignIn} />
             <Switch>
+            <Route exact path="/providers">
+                <ProvidersDashboard />
+              </Route>
               <Route exact path="/statistics">
                 <StatisticsDashboard />
               </Route>

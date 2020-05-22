@@ -96,8 +96,8 @@ class EmployeeCard extends React.Component{
                 
             </Card>
             <Collapse style ={collapseStyle} open={this.state.collapse}>
-                <div className="flex justify-between items-center  p-3 mt-3 ba b--light-gray br3 bg-near-white">
-                    <ul style={{textAlign:"left", columnCount:"3"}}>
+                <div className="flex justify-between items-center p-3 mt-3 ba b--light-gray br3 bg-near-white">
+                    <ul style={{textAlign:"left", columnCount:"2"}}>
                         <li><span>First Name :</span>  {employee.firstName}</li>
                         <li><span>Last Name :</span> {employee.lastName}</li>
                         <li><span>CNP :</span> {employee.cnp}</li>

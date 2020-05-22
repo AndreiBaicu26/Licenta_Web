@@ -12,11 +12,15 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  FormRadio
+  FormRadio,
+  FormSelect,
+  ModalFooter
 } from "shards-react";
 import { saveProduct } from "../../firebase/utils";
 import Product from "../../classes/product";
 import "../../styles/form.css"
+import { providers } from "../../pages/providers/provider";
+
 
 const initState = {
   selectedSize: "small",
@@ -93,7 +97,16 @@ class ProductForm extends React.Component {
          parseInt(foh.value),
          0,
          this.state.selectedSize,
-         barcode.value,0)
+         barcode.value,0);
+         let a =[];
+         var select = document.getElementById("providersSelect");
+         var optionSelected = select.options[select.selectedIndex].value;
+      
+        const index = this.props.providers.findIndex((value,index,arr)=>{
+            return value.name === optionSelected;
+         });
+         const providerSelected = this.props.providers[index];
+         p.addProvider(providerSelected);
          if(await saveProduct(p)===true){
            alert("Product added");
            this.props.toggle();
@@ -157,6 +170,16 @@ class ProductForm extends React.Component {
   }
 
   render() {
+    let providerOptions = [];
+    
+    if(this.props.providers.length > 0){
+      providerOptions = this.props.providers.map((provider,i)=>{
+        return (<option value ={provider.name} key ={i}>{provider.name}</option>)
+      })
+    }else{
+      providerOptions =  (<option value = {null}>No providers in database</option>)
+    }
+
     if (this.props.open === true && this.state.open === false) {
       
       this.changeState();
@@ -300,6 +323,19 @@ class ProductForm extends React.Component {
                 </label>
                 <FormFeedback invalid>Value can't be negative</FormFeedback>
               </FormGroup>
+
+
+              <label htmlFor="providers">
+                 Select a provider
+              </label>
+              <FormSelect id = "providersSelect" name ="providers">
+                {providerOptions}
+              </FormSelect>
+              
+            </Form>
+
+              <ModalFooter>
+              <div className="w-100 h-100 flex justify-center">
               <Button
                 style={{
                   backgroundColor: "DodgerBlue",
@@ -308,7 +344,9 @@ class ProductForm extends React.Component {
                  onClick={()=>this.saveProduct()}
               >Submit
               </Button>
-            </Form>
+              </div>
+              </ModalFooter>
+            
           </ModalBody>
         </Modal>
       </div>

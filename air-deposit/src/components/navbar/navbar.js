@@ -21,36 +21,31 @@ const middleButtonStyle ={
 }
 
 // ({onChange, onSignIn})
+const initState  = {
+  btn0 : false,
+  btn1 : false,
+  btn2 : false,
+  btn3 : false
+}
 class NavBar extends React.Component {
   constructor() {
     super();
     this.state = {
+      btn0 : false,
       btn1 : false,
       btn2 : false,
       btn3 : false
     };
   }
   
-  active = "btn_prod btn btn-info btn-lg active";
-  inactive = "btn_prod btn btn-info btn-lg"
+  active = " btn btn-info btn-lg active";
+  inactive = " btn btn-info btn-lg"
 
   changeActiveButton = (event) => {
-    
+     this.setState(initState)
       this.setState({[`btn${event.target.id}`]:true});
   };
 
-  changeActiveButton = (e)=>{
- 
-    for(let i = 1; i <3; i++){
-      if(e.target.id == i){
-       
-        e.target.setAttribute("class", this.active);
-       
-      }else
-        document.getElementById(i+"").setAttribute("class", this.inactive)
-    }
-    
-  }
 
   render() {
     
@@ -58,10 +53,21 @@ class NavBar extends React.Component {
       <nav className="bg-white flex justify-between bb b--black-10 mt3 pb3">
         <div className="empty"></div>
         <div className="nav__buttons" className="ml3">
+        <Link to="providers">
+            <Button
+              style={buttonFirstStyle}  
+              active = {this.state.btn0}
+              id="0"
+              size="lg"
+              theme="info"
+              onClick = {(e)=>this.changeActiveButton(e)}
+              className="btn_prov">Providers
+            </Button>
+          </Link>
           <Link to="products">
             <Button
-              style={buttonFirstStyle}
-              
+              style={middleButtonStyle}
+              active = {this.state.btn1}
               id="1"
               size="lg"
               theme="info"
@@ -73,7 +79,7 @@ class NavBar extends React.Component {
             <Button
               style={middleButtonStyle}
               id="2"
-            
+              active = {this.state.btn2}
               size="lg"
               theme="info"
               onClick = {(e)=>this.changeActiveButton(e)}
@@ -83,6 +89,7 @@ class NavBar extends React.Component {
           <Link to="statistics">
             <Button
               style={buttonSecondStyle}
+              active = {this.state.btn3}
               id="3"     
               size="lg"
               onClick = {(e)=>this.changeActiveButton(e)}

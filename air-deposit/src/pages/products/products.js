@@ -5,7 +5,7 @@ import ProductCard from "../../components/productCard/productCard";
 import ProductForm from "../../components/productForm/productForm"
 import ProviderForm from "../../components/providerForm/ProviderForm";
 import SemipolarLoading from "react-loadingg/lib/SemipolarLoading";
-import { firestore } from "../../firebase/utils";
+import { firestore, getProvider } from "../../firebase/utils";
 import Product from "../../classes/product";
 import "./products.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -20,10 +20,11 @@ class ProductsDashboard extends React.Component {
     super(props);
     this.state = {
       modalOpen:false,
-      providerModalOpen:false,
+      providers: [],
       products: [],
       noData:false,
-      inputText: ""
+      inputText: "",
+    
     };
   }
 
@@ -36,11 +37,10 @@ class ProductsDashboard extends React.Component {
    
   }
 
-  toggleProviderModal = () =>{
-    this.setState({providerModalOpen:!this.state.providerModalOpen});
-  }
+
 
   arrayOfProducts = [];
+  arrayOfProviders = [];
 
   componentDidMount(){
     
@@ -55,6 +55,7 @@ class ProductsDashboard extends React.Component {
           var p = new Product(change.doc.data().name, change.doc.data().noOfPlayers,change.doc.data().price,change.doc.data().foh,change.doc.data().boh,change.doc.data().size,change.doc.id,change.doc.data().alertAt);
   
           p.addDeposit((change.doc.data().placesDeposited))
+          p.addProvider(change.doc.data().provider)
             
           this.arrayOfProducts.push(p)        
         }else{
@@ -81,17 +82,27 @@ class ProductsDashboard extends React.Component {
       }
 
     })
+
+    this.getProviders();
+
+  
+  }
+
+  getProviders = async () =>{
+    const provs = await getProvider();
+    this.setState({providers:provs});
   }
 
  
+
   render() {
-   
+    
     var cards = []
-  
+   console.log(this.state.providers)
     if(this.state.products.length > 0){ 
 
         cards = this.state.products.map((data,i)=>{
-          console.log(data)
+         
           if(data.name.toUpperCase().includes(this.state.inputText.toUpperCase())){
             return(<ProductCard key={i} data ={data}></ProductCard>)
           }
@@ -108,13 +119,8 @@ class ProductsDashboard extends React.Component {
         <ProductForm
           open={this.state.modalOpen}
           toggle={this.toggleModal}
+          providers = {this.state.providers}
         />
-
-        <ProviderForm
-          open = {this.state.providerModalOpen}
-          toggle = {this.toggleProviderModal}
-        />
-        
         <div className="flex w-100 vh-100 justify-around">
           <div className=" bg-green w-20 h-10 flex flex-column items-center justify-center">
             <Button
@@ -124,12 +130,7 @@ class ProductsDashboard extends React.Component {
               onClick={()=>this.toggleModal()}
             > Add new product
             </Button>
-            <Button
-              style ={{marginTop:"2.5rem"}}
-              size="lg"
-              onClick={()=>this.toggleProviderModal()}
-            > Add new provider
-            </Button>
+           
           </div>
           <div
             style={{ zIndex: "0", overflow: "scroll" ,overflowX: "hidden"}}
