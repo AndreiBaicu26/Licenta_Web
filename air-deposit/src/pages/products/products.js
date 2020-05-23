@@ -98,7 +98,7 @@ class ProductsDashboard extends React.Component {
   render() {
     
     var cards = []
-   console.log(this.state.providers)
+   
     if(this.state.products.length > 0){ 
 
         cards = this.state.products.map((data,i)=>{

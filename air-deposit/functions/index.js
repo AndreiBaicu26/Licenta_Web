@@ -1,11 +1,11 @@
 const functions = require('firebase-functions');
 
 const admin = require('firebase-admin');
-//const nodemailer = require('nodemailer');
-admin.initializeApp();
-//require('dotenv').config();
 
-//const {EMAIL, PASSWORD} = process.env;
+admin.initializeApp();
+
+
+
 
 
 
@@ -13,8 +13,8 @@ const sendEmail = (product)=>{
 
 
   const send = require('gmail-send')({
-    user: "baicuandrei17@stud.ase.ro",
-    pass: "calotadenisa14",
+    user: functions.config().mailer.email,
+    pass: functions.config().mailer.password,
     to:   'baicuandrei62@gmail.com',
     subject: `Stock Alert on product: ${product.name}`,
   });

@@ -23,6 +23,7 @@ export default class FohOrBohRadio extends React.Component {
   render() {
     return (
       <div>
+      
           <FormRadio  
             id="store"
             inline
@@ -34,6 +35,7 @@ export default class FohOrBohRadio extends React.Component {
           >
            Store
           </FormRadio>
+
           <FormRadio
             inline
             name="place"

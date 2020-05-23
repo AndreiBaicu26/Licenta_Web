@@ -88,11 +88,9 @@ class ProvidersDashboard extends React.Component {
   
     if(this.state.providers.length > 0){ 
 
-        cards = this.state.providers.map((data,i)=>{
-          console.log(data)
-          
+        cards = this.state.providers.map((data,i)=>{  
             return(<ProviderCard key={i} data ={data}/>)
-          
+
           })
 
     }else if(this.state.noData===false){

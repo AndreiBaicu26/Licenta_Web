@@ -5,7 +5,7 @@ import SemipolarLoading from "react-loadingg/lib/SemipolarLoading";
 
 import "tachyons"
 import "../../styles/toggleStyle.css"
-import { removeProduct, functions } from "../../firebase/utils";
+import { removeProduct, functions,updateProduct, getStorage, updateStoredProductsStorageSpace } from "../../firebase/utils";
 import FohOrBohRadio from "./fohOrBohRadio";
 import PlacesDepositedRadio from "./placesDepositedRadio";
 
@@ -77,7 +77,7 @@ class ProductCard extends React.Component {
     }
 
     handlePlaceChange = (place)=>{
-        console.log(place)
+        
         if(place ==="store"){
             this.setState({deleteFromStore:true})
         }else{
@@ -133,17 +133,54 @@ class ProductCard extends React.Component {
         this.setState({placeToBeRemovedFrom: storageSpace});
     }
 
-    handleCassation = (product) =>{
-        console.log(this.state.placeToBeRemovedFrom);
-        alert("Stergere din spatiu depozitare")
-        this.toggleFohOrBohModal();
-        //TODO: REmove FROM DB
+    handleCassation = async (product) =>{
+
+        if(this.state.placeToBeRemovedFrom === null ){
+            alert("Please select a storage space")
+        }else{
+            this.toggleFohOrBohModal();
+           const storageSpace =  await getStorage(this.state.placeToBeRemovedFrom);
+           const prodName = product.name;
+
+          if(storageSpace.storedProducts[prodName] === 1){
+            
+            delete storageSpace.storedProducts[prodName];
+            delete product.placesDeposited[storageSpace.storageID]
+          }else{  
+            product.placesDeposited[storageSpace.storageID] -=1;
+            storageSpace.storedProducts[prodName] -=1; 
+          }
+          product.boh -=1;
+         const isStorageUpdateCompleted = await updateStoredProductsStorageSpace(storageSpace);
+         const isProductUpdateCompleted = await updateProduct(product);
+          if(isStorageUpdateCompleted && isProductUpdateCompleted ){
+             alert("Product removed from storage space")
+          }
+
+        }
+        
+     
+        
+       
     }
 
-    removeProductCassation = (product) =>{
+    removeProductCassation = async (product) =>{
         this.toggleFohOrBohModal();
-        alert("stergere din FOH")
-        //TODO Remove one product from FOH if exists
+       
+        
+        if(product.foh === 0){
+            alert("No more products in Store");
+        }else{
+            product.foh -=1;
+            const isCompleted =  await updateProduct(product);
+            if(isCompleted){
+                 alert("Product removed")
+            }else{
+             alert("Error while removing product");
+            }
+             
+
+        }
     }
 
     buttonNextClick = () =>{
@@ -164,7 +201,7 @@ class ProductCard extends React.Component {
       
 
         const product = this.props.data;
-        console.log(product)
+       
         let storedLocations = [];
         for (let key of Object.keys(product.placesDeposited)) {
             storedLocations.push(<h3>{key}</h3>);
@@ -235,7 +272,7 @@ class ProductCard extends React.Component {
 
                     </ModalBody>
                     <ModalFooter style={{ justifyContent: "space-around" }}>
-                        <Button onClick={() => this.removeProduct(product)}>Yes, remove</Button>}
+                        <Button onClick={() => this.removeProduct(product)}>Yes, remove</Button>
                         <Button onClick={() => this.toggleModal()}>No</Button>
                     </ModalFooter>
                 </Modal>
@@ -294,7 +331,7 @@ class ProductCard extends React.Component {
                     
                     
                         </ModalBody>
-                    <ModalFooter style={{ justifyContent: "space-around" }}>
+                     <ModalFooter style={{ justifyContent: "space-around" }}>
 
                         <Button onClick={() => this.toggleCantDeleteProductModal()}>Ok</Button>
 

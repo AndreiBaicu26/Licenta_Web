@@ -1,6 +1,6 @@
 import React from 'react';
 import 'tachyons';
-import { FormFeedback, Form, FormGroup, Container, Row, Col, Button, Modal, ModalBody, ModalHeader, FormInput} from "shards-react";
+import { FormFeedback, Form, FormGroup, Container, Row, Col, Button, Modal, ModalBody, ModalHeader, FormInput, InputGroup} from "shards-react";
 import {saveEmployee} from '../../firebase/utils'
 import "../../styles/form.css"
 class EmployeeForm extends React.Component{
@@ -66,7 +66,8 @@ class EmployeeForm extends React.Component{
             break;
 
         case "cnp":
-          if(event.target.value.length === 13){     
+          if(this.validateCNP(event.target.value)){     
+
             this.setState({cnp:{cnpValid:true, cnpInvalid:false }})
           }else
             this.setState({cnp:{cnpInvalid: true, cnpValid:false }})
@@ -74,7 +75,72 @@ class EmployeeForm extends React.Component{
         default:return;
       }
     
+  
   }
+
+  validateCNP( cnpData ) {
+    
+    var i=0;
+    var year=0;
+    var result=0; 
+    var cnp=[];
+    var controlNumbers=[2,7,9,1,4,6,3,5,8,2,7,9];
+
+    if( cnpData.length !== 13 )  return false; 
+
+    for( i=0 ; i<13 ; i++ ) {
+        cnp[i] = parseInt( cnpData.charAt(i) , 10 );
+
+        if( isNaN( cnp[i] ) )  return false; 
+
+        if( i < 12 ) {
+           result = result + ( cnp[i] * controlNumbers[i] ); 
+          }
+    }
+
+    
+		
+		
+    result = result % 11;
+
+    if( result === 10 )  result = 1; 
+
+   
+    year = (cnp[1]*10)+cnp[2];
+
+    switch( cnp[0] ) {
+        case 1  : case 2 : { 
+            year += 1900; 
+          } break;
+        case 3  : case 4 : { 
+            year += 1800; 
+          } break;
+        case 5  : case 6 : { 
+            year += 2000; 
+          } break;
+        default : return false; 
+    }
+    var luna= parseInt("" + cnp[3] + cnp[4]);
+		var zi= parseInt("" + cnp[5] + cnp[6]);
+		
+		var dataNasterii=new Date();
+
+    
+    dataNasterii.setMonth(luna -1 );
+    dataNasterii.setDate(zi);
+    dataNasterii.setFullYear(year);
+    console.log(dataNasterii)
+   
+		var dataCurenta=new Date();
+    console.log(dataCurenta)
+    console.log(dataNasterii.getTime() - dataCurenta.getTime())
+    
+    if((dataCurenta.getTime() - dataNasterii.getTime() ) < 0) return false;
+		
+    if( year < 1800 || year > 2099 )  return false; 
+
+    return ( cnp[12] === result );
+}
   
   componentWillMount(){
     this.setState({open:this.props.open})

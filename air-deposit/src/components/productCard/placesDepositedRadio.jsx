@@ -22,13 +22,13 @@ export default class PlacesDepositedRadio extends React.Component {
 
   render() {
 
-    console.log(this.props);
+    
     var storedLocations =[];
     for (let key of Object.keys(this.props.product.placesDeposited)) {
       storedLocations.push(key);
     }
 
-    console.log(storedLocations)
+   
     var radios  = [];
    radios =  storedLocations.map((value,index)=>{
         return(<FormRadio inline name ="placeDeposited"

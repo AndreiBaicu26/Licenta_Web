@@ -54,6 +54,15 @@ var firebaseConfig = {
     }
   }
 
+  export const updateProduct = async(product)=>{
+
+    try{
+     await firestore.collection("products").doc(product.documentId).set(Object.assign({},product));
+      return true;
+    }catch(err){
+      throw Error(err.message)
+    }
+  }
 
   export const removeEmployee= async(dataEmployee)=>{
     
@@ -148,9 +157,7 @@ var firebaseConfig = {
 
   }
 
-
   export const getSales = async (month)=>{
-
   
    const snap = await  firestore.collection("sales").get();
 
@@ -168,8 +175,6 @@ var firebaseConfig = {
 
     return salesToBeReturned; 
   }
-
-  
 
   export const getProducts = async ()=>{
 
@@ -209,7 +214,6 @@ var firebaseConfig = {
 
   }
 
- 
   export const saveProvider = async(provider) =>{
     try{
       
@@ -254,6 +258,28 @@ var firebaseConfig = {
      
     }
   }
+
+export const getStorage = async(storageID)=>{
+
+  try{
+
+    const storageSnap = await firestore.collection("storageSpaces").doc(storageID).get();
+    return storageSnap.data();
+
+  }catch(err){
+    throw Error(err.message)
+  }
+}
+
+
+export const updateStoredProductsStorageSpace = async (storage)=>{
+  try{
+    await firestore.collection("storageSpaces").doc(storage.storageID).set(Object.assign({},storage));
+     return true;
+   }catch(err){
+     throw Error(err.message)
+   }
+}
 
 
   export default firebase;
