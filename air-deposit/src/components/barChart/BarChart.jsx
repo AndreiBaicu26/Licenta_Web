@@ -162,6 +162,7 @@ class BarChartProductsSales extends PureComponent {
         }
         
         this.setState({ data: dataToBeShown })
+        
 
     }
 
@@ -169,8 +170,8 @@ class BarChartProductsSales extends PureComponent {
         const month = this.getOptionSelected();
         
         const prod = await getProducts();
-         const sal = await getSales(month);
-    
+        const sal = await getSales(month);
+        this.props.getSales(sal);
          this.setState({products: prod, sales:sal})
      
 

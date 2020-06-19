@@ -9,7 +9,24 @@ import "./statistics.css"
 
 
 
-const StatisticsDashboard = () => {
+class StatisticsDashboard extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+       
+        sales :[],
+       
+    };
+ 
+}
+
+  getSales = (sales) =>{
+    this.setState({sales: sales})
+  }
+
+  render(){
+    
   return (
    <div className=" w-100 h-100 bg-blue"
    style = {{zIndex: "0", overflowX: "hidden"}}>
@@ -17,19 +34,20 @@ const StatisticsDashboard = () => {
       <section className="barchart">
           <div className =" mt-0 vh-80">
           
-            <BarChartProductsSales/>
+            <BarChartProductsSales getSales ={this.getSales}/>
             
           </div>
        </section>
        <section className ="performance ">
           <div className="flex justify-around vh-80 mb-3 ">
                 <BestPerformingProduct/>
-                <AllTimeSalesChart/>
+                <AllTimeSalesChart sales = {this.state.sales}/>
             </div>
       </section>
    </div>
  
   );
+  }
 };
 
 export default StatisticsDashboard;
