@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
-import { Card, CardHeader, CardBody, Button, FormRadio,FormSelect } from 'shards-react'
+import { Card, CardHeader, CardBody, Button, FormRadio,FormSelect, CardFooter } from 'shards-react'
 import {
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
-
+import SemipolarLoading from "react-loadingg/lib/SemipolarLoading";
 import { getSales, getProducts } from '../../firebase/utils';
 
 
@@ -84,7 +84,7 @@ class BarChartProductsSales extends PureComponent {
     updateWindowDimensions() {
         if(document.getElementById("cardBar")!==null){
         const width = document.getElementById("cardBar").offsetWidth
-        console.log(width)
+      
         this.setState({ width: width, height: window.innerHeight });
         }
     }
@@ -93,12 +93,12 @@ class BarChartProductsSales extends PureComponent {
     
 
     daysInMonth(month, year) {
-        return new Date(year, month, 0).getDate();
+        return new Date(year, month,0).getDate();
     }
 
 
     mapData = (monthSelected,option = "revenue") =>{
-        var days = this.daysInMonth(4, 2020);
+        var days = this.daysInMonth(monthSelected, 2020);
         var salesData = [];
         var dataToBeShown = [];
  
@@ -160,6 +160,7 @@ class BarChartProductsSales extends PureComponent {
 
 
         }
+        
         this.setState({ data: dataToBeShown })
 
     }
@@ -202,8 +203,42 @@ class BarChartProductsSales extends PureComponent {
         this.mapData(optionSelected,this.state.selectedTypeOfChart);
     }   
 
-    render() {
+    getBestSellingProduct = () =>{
+       
+        var map = new Map();
+         for(let i = 0; i <  this.state.data.length; i++){
+        
+            for(let a in this.state.data[i]){
+                if(a !== "day"){
+                    if (map.has(a)) {
+                        map.set(a,map.get(a) + this.state.data[i][a]);
+                       
+                    } else {
+                        map.set(a, this.state.data[i][a]);
+                    }
+                }
+            }
+        }
+        
+        let keys = Array.from( map.values() )
 
+        var max = Math.max(...keys)
+
+       
+        for(const y of map.entries()){
+
+            if(y[1] === max){
+               return y[0];
+            }
+           
+        }
+
+
+        
+    }
+
+    render() {
+        
         var bars = [];
         if (this.state.data.length !== 0) {
             Object.keys(this.state.data[0]).forEach((value, index, arr) => {
@@ -262,6 +297,11 @@ class BarChartProductsSales extends PureComponent {
 
                     <CardBody>
                         <div>
+                        {bars.length === 0? 
+                            <div className = "mt-5 mb-2">
+                            <SemipolarLoading speed = {"0.7"}size={"large"} color={"#000"}></SemipolarLoading>
+                            </div>
+                                :
                             <BarChart
                                 width={this.state.width}
                                 height={400}
@@ -280,8 +320,13 @@ class BarChartProductsSales extends PureComponent {
 
                                 {bars}
                             </BarChart>
+                        }
                         </div>
                     </CardBody>
+                    <CardFooter>
+                        {this.state.selectedTypeOfChart === "revenue" ? (<h4>Most earnings came from: <span> {this.getBestSellingProduct()} </span></h4>) :
+                        <h4>Most units sold:<span> {this.getBestSellingProduct()} </span></h4> }
+                    </CardFooter>
 
                 </Card>
             </div>

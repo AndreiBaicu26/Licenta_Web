@@ -259,6 +259,54 @@ var firebaseConfig = {
     }
   }
 
+  export const getEntriesForProduct = async(prodName) =>{
+    
+    try{
+
+      const entries = await firestore.collection("products").doc(prodName).collection("entries").get();
+      var entriesToBeReturned = [];
+      entries.forEach(doc=>{
+        
+        entriesToBeReturned.push(doc.data())
+      })
+      return entriesToBeReturned;
+    
+    }catch(err){
+      throw Error(err.message)
+    }
+
+  }
+
+  export const getExitsForProduct = async(prodName) =>{
+    
+    try{
+
+      const exits = await firestore.collection("products").doc(prodName).collection("exits").get();
+      var exitsToBeReturned = [];
+      exits.forEach(doc=>{
+        
+        exitsToBeReturned.push(doc.data())
+      })
+      return exitsToBeReturned;
+    
+    }catch(err){
+      throw Error(err.message)
+    }
+
+  }
+
+  export const getProductDetails = async()=>{
+    const snap = await  firestore.collection("products").get();
+ 
+    var productsToBeReturned = [];
+     snap.docs.forEach(doc=>{
+      productsToBeReturned.push(doc.data())
+     })
+ 
+ 
+     return productsToBeReturned;
+  }
+
 export const getStorage = async(storageID)=>{
 
   try{
