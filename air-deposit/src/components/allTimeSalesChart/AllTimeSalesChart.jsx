@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Card, CardHeader, CardBody, Button, FormRadio,FormSelect, CardFooter, timeoutsShape } from 'shards-react'
+import { Card, CardHeader, CardBody} from 'shards-react'
 
 import SemipolarLoading from "react-loadingg/lib/SemipolarLoading";
 
@@ -79,7 +79,7 @@ class AllTimeSalesChart extends PureComponent {
         }
       
         return (
-            <div className = "w-40" >
+            <div  className="w-30">
                 <Card id="cardPie" style={{ zIndex: "2", marginTop: "20px" }} small>
                     <CardHeader>
                         <h4>All time products sold</h4>
@@ -94,13 +94,14 @@ class AllTimeSalesChart extends PureComponent {
                                 </div> 
                             : 
                                 <PieChart width={this.state.width} height={300}>
-                                    <Pie isAnimationActive={true} data={this.state.data} cx={this.state.width/2} cy={130} outerRadius={100} fill="#8884d8" label>
+                                    <Pie isAnimationActive={true} data={this.state.data} cx={this.state.width/2} cy={110} outerRadius={100} fill="#8884d8" label>
                                         {
                                             this.state.data.map((entry, index) => <Cell fill={this.getRandomColor()}/>)
                                         }
                                     </Pie>
                                     <Tooltip/>
-                                    <Legend />
+                                    
+                                    <Legend wrapperStyle={{marginTop:"60px"}}/>
                                 </PieChart>
                         }
   

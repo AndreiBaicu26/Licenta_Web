@@ -25,6 +25,7 @@ export default class PlacesDepositedRadio extends React.Component {
     
     var storedLocations =[];
     for (let key of Object.keys(this.props.product.placesDeposited)) {
+      if(this.props.product.placesDeposited[key] !== 0 )
       storedLocations.push(key);
     }
 

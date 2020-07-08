@@ -11,7 +11,7 @@ import {
 import { getEmployee } from '../../firebase/utils';
 import './signin.css';
 import 'tachyons';
-import { Redirect, BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
 
 export var userLogged;

@@ -164,11 +164,7 @@ var firebaseConfig = {
    var salesToBeReturned = [];
     snap.docs.forEach(map =>{
 
-      // var date = map.data().dateCreated.toDate().getMonth();
      
-      // if(date === month){
-      //   salesToBeReturned.push(map.data())
-      // }
       salesToBeReturned.push(map.data());
     })
 
@@ -329,5 +325,15 @@ export const updateStoredProductsStorageSpace = async (storage)=>{
    }
 }
 
+export const getAllStorages = async()=>{
+    let data = [];
+    const storagesSnap = await firestore.collection("storageSpaces").get();
+    storagesSnap.docs.forEach(doc =>{
+      data.push(doc.data())
+    })
+    console.log(data);
+    return data;
+  
+}
 
   export default firebase;

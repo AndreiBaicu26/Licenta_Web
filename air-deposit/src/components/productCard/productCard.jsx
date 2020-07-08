@@ -1,5 +1,5 @@
 import React from "react";
-import {  Card, CardBody, Button, Collapse, Modal, ModalBody, ModalHeader, ModalFooter, FormInput, CardHeader, CardTitle, InputGroup } from "shards-react";
+import {  Card, CardBody, Button, Collapse, Modal, ModalBody, ModalHeader, ModalFooter, FormInput, CardTitle } from "shards-react";
 import SemipolarLoading from "react-loadingg/lib/SemipolarLoading";
 
 
@@ -93,7 +93,7 @@ class ProductCard extends React.Component {
 
 
     handleCreateAlertCLick = (event, product) => {
-        console.log(product);
+       
         const a = document.getElementById("#numberAlert");
 
         try {
@@ -198,16 +198,12 @@ class ProductCard extends React.Component {
 
     render() {
 
-      
-
         const product = this.props.data;
        
         let storedLocations = [];
         for (let key of Object.keys(product.placesDeposited)) {
             storedLocations.push(<h3>{key}</h3>);
         }
-
-
 
         return (
 

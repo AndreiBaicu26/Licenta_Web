@@ -1,14 +1,17 @@
 import React from "react";
 import "tachyons";
-import {Button, FormInput} from "shards-react";
+import {Button} from "shards-react";
 
 
 import ProviderForm from "../../components/providerForm/ProviderForm";
 import SemipolarLoading from "react-loadingg/lib/SemipolarLoading";
-import { firestore, getProvider } from "../../firebase/utils";
+import { firestore} from "../../firebase/utils";
 import ProviderCard from "../../components/providerCard/ProviderCard";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
+const search = <FontAwesomeIcon icon={faSearch} />
 
 
 
@@ -89,7 +92,9 @@ class ProvidersDashboard extends React.Component {
     if(this.state.providers.length > 0){ 
 
         cards = this.state.providers.map((data,i)=>{  
+          if(data.name.toUpperCase().includes(this.state.inputText.toUpperCase())){
             return(<ProviderCard key={i} data ={data}/>)
+          }
 
           })
 
@@ -116,17 +121,16 @@ class ProvidersDashboard extends React.Component {
             </Button>
           </div>
 
-          <div
-            style={{ zIndex: "0", overflow: "scroll" ,overflowX: "hidden"}}
-            className="bg-blue w-100 h-100  items-center "
-          >
-          
-            {/* <input onChange={(e)=>this.handleTextChange(e)} placeholder="Search barcode or name..." class="Search-box" id="Search-box" autocomplete="off" ></input>
-            {search} */}
-        
-            
-            {cards}
-          </div>
+          <div style = {{zIndex:"0",overflow:"scroll"}} className="bg-blue w-100 h-100  items-center ">
+               
+               <div>
+                 <input onChange={(e)=>this.handleTextChange(e)} placeholder="Search name of provider..." class="Search-box" id="Search-box" autocomplete="off" ></input>
+                 {search}
+             
+                 </div>
+                    {cards}
+                    
+               </div >
         </div>
       </div>
     );

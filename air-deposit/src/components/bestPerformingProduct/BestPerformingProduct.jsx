@@ -112,13 +112,13 @@ class BestPerformingProduct extends PureComponent {
 
     changeData = (option)=>{
         let data = this.state.products;
-        console.log(data, "====--", option)
+       
         this.sortData(data, option);
         this.setState({selectedTypeOfOrder:option, data: data})
     }
 
     sortData = (items, option) =>{
-        console.log(items, "====--", option)
+       
         if(option === "ascending"){
             items.sort((a,b)=>{
         
@@ -164,11 +164,11 @@ class BestPerformingProduct extends PureComponent {
 
 
         return (
-            <div className = "w-40">
+            <div className="w-30">
                 <Card id="cardPerformance" style={{ zIndex: "2", marginTop: "20px" }} small>
                     <CardHeader>
                     <div className="flex justify-between ">
-                        <h4>Product Performance: </h4>
+                        <h5>Product Performance: </h5>
                             <div className = "radioButtons">
                                 <FormRadio
                                     inline

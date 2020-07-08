@@ -5,7 +5,10 @@ import EmployeeForm from '../../components/employeeForm/employeeForm'
 import EmployeeCard from "../../components/employeeCard/employeeCard"
 import {firestore } from "../../firebase/utils";
 import { SemipolarLoading } from 'react-loadingg';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
+const search = <FontAwesomeIcon icon={faSearch} />
 class EmployeesDashboard extends React.Component {
 
   constructor(props){
@@ -13,9 +16,14 @@ class EmployeesDashboard extends React.Component {
     this.state = {
       modalOpen:false,
       employees:[],
-      noData:false
+      noData:false,
+      inputText: "",
 
     }
+  }
+
+  handleTextChange = (e) =>{
+    this.setState({inputText:e.target.value});
   }
   
   toggleModal= () =>{
@@ -78,7 +86,10 @@ class EmployeesDashboard extends React.Component {
    var cards = [];
    if(this.state.employees.length > 0){
       cards = this.state.employees.map((data,i)=>{
+        if(data.firstName.toUpperCase().includes(this.state.inputText.toUpperCase())||
+        data.lastName.toUpperCase().includes(this.state.inputText.toUpperCase()) ){
         return(<EmployeeCard  key={i} data ={data} onSignIn={this.props.onSignIn} ></EmployeeCard>)
+        }
       })
    }else if(this.state.noData===false){
      cards = <SemipolarLoading speed = {"0.7"}size={"large"} color={"#eeeeee"}></SemipolarLoading>
@@ -96,7 +107,14 @@ class EmployeesDashboard extends React.Component {
           <div className=" bg-green w-20 h-10 flex items-center">
                 <Button style = {{margin:"auto"}}size ="lg" theme="success" onClick ={()=>this.toggleModal()}>Add Employee</Button>
           </div>
+          
           <div style = {{zIndex:"0",overflow:"scroll"}} className="bg-blue w-100 h-100  items-center ">
+               
+          <div>
+            <input onChange={(e)=>this.handleTextChange(e)} placeholder="Search name of employee..." class="Search-box" id="Search-box" autocomplete="off" ></input>
+            {search}
+        
+            </div>
                {cards}
                
           </div >

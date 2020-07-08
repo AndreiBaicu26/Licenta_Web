@@ -1,9 +1,8 @@
 import React from "react";
 import "tachyons";
-import {Button, FormInput} from "shards-react";
+import {Button} from "shards-react";
 import ProductCard from "../../components/productCard/productCard";
 import ProductForm from "../../components/productForm/productForm"
-import ProviderForm from "../../components/providerForm/ProviderForm";
 import SemipolarLoading from "react-loadingg/lib/SemipolarLoading";
 import { firestore, getProvider } from "../../firebase/utils";
 import Product from "../../classes/product";
@@ -102,7 +101,6 @@ class ProductsDashboard extends React.Component {
     if(this.state.products.length > 0){ 
 
         cards = this.state.products.map((data,i)=>{
-         
           if(data.name.toUpperCase().includes(this.state.inputText.toUpperCase())){
             return(<ProductCard key={i} data ={data}></ProductCard>)
           }
@@ -137,7 +135,7 @@ class ProductsDashboard extends React.Component {
             className="bg-blue w-100 h-100  items-center "
           >
           <div>
-            <input onChange={(e)=>this.handleTextChange(e)} placeholder="Search barcode or name..." class="Search-box" id="Search-box" autocomplete="off" ></input>
+            <input onChange={(e)=>this.handleTextChange(e)} placeholder="Search name of product..." class="Search-box" id="Search-box" autocomplete="off" ></input>
             {search}
         
             </div>

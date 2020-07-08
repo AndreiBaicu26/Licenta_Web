@@ -1,6 +1,6 @@
 import React from 'react';
 import 'tachyons';
-import { FormFeedback, Form, FormGroup, Container, Row, Col, Button, Modal, ModalBody, ModalHeader, FormInput, InputGroup} from "shards-react";
+import { FormFeedback, Form, FormGroup, Container, Row, Col, Button, Modal, ModalBody, ModalHeader, FormInput} from "shards-react";
 import {saveEmployee} from '../../firebase/utils'
 import "../../styles/form.css"
 class EmployeeForm extends React.Component{
@@ -111,13 +111,16 @@ class EmployeeForm extends React.Component{
     switch( cnp[0] ) {
         case 1  : case 2 : { 
             year += 1900; 
-          } break;
+            break;
+          } 
         case 3  : case 4 : { 
             year += 1800; 
-          } break;
+            break;
+          } 
         case 5  : case 6 : { 
             year += 2000; 
-          } break;
+            break;
+          } 
         default : return false; 
     }
     var luna= parseInt("" + cnp[3] + cnp[4]);
@@ -214,12 +217,12 @@ class EmployeeForm extends React.Component{
           <ModalBody > 
          <Form>
         
-            <Container style={{padding:"0px"}} className="formInput">
+            <Container style={{padding:"0px", backgroundColor:"#ffffff"}} className="formInput">
                  <Row style={{marginLeft:"-1.7rem", marginRight:"-1.7rem"}} className ="pl0"    >
                     <Col className ="pl0">
                     <FormGroup className = "mt1 tl" >
                       <FormInput 
-                      className="numeros"
+                        className="numeros"
                         placeholder = "First name"
                         id ="fName"
                         valid = {this.state.fName.fNameValid}

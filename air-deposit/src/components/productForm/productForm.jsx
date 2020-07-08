@@ -19,7 +19,7 @@ import {
 import { saveProduct } from "../../firebase/utils";
 import Product from "../../classes/product";
 import "../../styles/form.css"
-import { providers } from "../../pages/providers/provider";
+
 
 
 const initState = {
@@ -41,10 +41,6 @@ const initState = {
         invalid: false,
         value:""
 },
-//   boh:{
-//         invalid: false,
-//         value:""
-// },
   barcode:{
     invalid:false,
     value:""
@@ -71,14 +67,14 @@ class ProductForm extends React.Component {
     const {prodName, foh,price, numPlayers, barcode} = this.state;
    
     if(prodName.invalid === false && 
-        // boh.invalid=== false && 
+        
         foh.invalid===false && 
         price.invalid===false && 
         numPlayers.invalid===false &&
         numPlayers.invalid===false){
         if(prodName.prodNameValue.length> 0 &&
         foh.value.length> 0 &&
-        // boh.value.length > 0 &&
+        
         numPlayers.numPlayersValue.length > 0 &&
         price.priceValue.length >0  &&
         barcode.value.length > 0){
